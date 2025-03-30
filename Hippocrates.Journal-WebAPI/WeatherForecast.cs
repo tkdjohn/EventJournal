@@ -1,4 +1,4 @@
-namespace Hippocrates.Journal_WebAPI {
+namespace Hippocrates.Journal.WebAPI {
     public class WeatherForecast {
         public DateOnly Date { get; set; }
 

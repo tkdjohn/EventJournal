@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hippocrates.Journal_WebAPI.Controllers {
+namespace Hippocrates.Journal.WebAPI.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase {

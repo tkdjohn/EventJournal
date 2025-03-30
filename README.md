@@ -4,25 +4,6 @@ Collect basic timestamped symptom data with the intent that the data can be anal
 To start, this will focus on symptoms and intensity and intentionally be a single user app. Longer term, the idea is to be able to couple this data with other similar journal data (such as food and medicine tracking). With this in mind the journal entries will be fairly generic in nature.
 Maybe rather than tracking symptoms, food, exercise separately, we track EVENTS
 with user defined event types such as
-- Bathroom visit with sub events such as 
-	- blood in stool
-	- stool consistency
-	- back pain prior to event
-- Exercise with sub events like 
-    - ??
-drawback here is abstraction complexity and different events have different needs
-(symptoms for some events, duration and other meta data for exercises, both have intensity but the intensities have different meanings)
-
-
-OR we track each event type in a separate table  with separate journal tables?
-- could use inheritance and have a base journal entry class or interface
-- drawback is requires new tables for every new event type
-
-OR 
-
-maybe both?  have events and some events have related symptoms 
-
-----------
 
 
 ## Features
