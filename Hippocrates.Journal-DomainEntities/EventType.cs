@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Hippocrates.Journal.DomainEntities {
     public class EventType : BaseEntity {
@@ -12,6 +7,7 @@ namespace Hippocrates.Journal.DomainEntities {
         [Required] public required string Name { get; set; }
         [MaxLength(500)] public string? Description { get; set; }
 
+        //TODO: this code really belongs in a service or maybe repo
         public static IEnumerable<EventType> DefaultEventTypes() {
             return [
                 new EventType { EventTypeGuid = Guid.NewGuid(), Name = "Random Event", Description = "Use for tracking random things like onset of pain, headache, or whatever that isn't directly associated with a specific even type."},
