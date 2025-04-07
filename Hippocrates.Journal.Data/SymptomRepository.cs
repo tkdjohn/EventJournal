@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hippocrates.Journal.DomainEntities;
 
 namespace Hippocrates.Journal.Data {
-    internal class SymptomRepository {
+    public class SymptomRepository(IDatabaseContext db) : BaseRepository<Symptom>(db, db.Symptoms) {
+
     }
 }
