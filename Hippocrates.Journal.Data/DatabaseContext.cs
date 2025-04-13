@@ -5,7 +5,7 @@ namespace Hippocrates.Journal.Data {
 
     public class DatabaseContext : DbContext, IDatabaseContext {
         public DbSet<Symptom> Symptoms { get; set; } = null!;
-        public DbSet<IntensityReposity> Intensities { get; set; } = null!;
+        public DbSet<IntensityRepository> Intensities { get; set; } = null!;
         public DbSet<Event> Events { get; set; } = null!;
         public DbSet<EventTypeRepository> EventTypes { get; set; } = null!;
         public DbSet<EventSymptomRepository> EventSymptoms { get; set; } = null!;

@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Hippocrates.Journal.Data {
     public interface IDatabaseContext {
         DbSet<Symptom> Symptoms { get; set; }
-        DbSet<IntensityReposity> Intensities { get; set; }
+        DbSet<Intensity> Intensities { get; set; }
         DbSet<Event> Events { get; set; }
-        DbSet<EventTypeRepository> EventTypes { get; set; }
-        DbSet<EventSymptomRepository> EventSymptoms { get; set; }
+        DbSet<EventType> EventTypes { get; set; }
+        DbSet<EventSymptom> EventSymptoms { get; set; }
 
         Task SaveChangesAsync();
     }

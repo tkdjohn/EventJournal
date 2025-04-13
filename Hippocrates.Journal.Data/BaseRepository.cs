@@ -15,29 +15,42 @@ namespace Hippocrates.Journal.Data {
             await db.SaveChangesAsync().ConfigureAwait(false);
         }
         public async Task<T?> GetAsync(int id) {
-            return await table.FirstOrDefaultAsync(t => t.Id  == id).ConfigureAwait(false);
+            return await table.FindAsync(id).ConfigureAwait(false);
         }
 
         public async Task<T?> GetAsync(Guid resourceId) { 
             return await table.FirstOrDefaultAsync(t => t.ResourceId == resourceId).ConfigureAwait(false); 
         }
 
-        //TODO: can this handle created date and lastmodified
-        //date and prevent updates to id and resourceid
-        // and then call a delegate? -- look and see how cortside handles this
-        public abstract Task UpdateAsync(T entityUpdate);
-        //public override Task UpdateAsync(Event entityUpdate) {
-            //ArgumentNullException.ThrowIfNull(nameof(orderUpdate));
-            //var existingOrder = await db.Orders.FindAsync(orderUpdate.OrderId).ConfigureAwait(false)
-            //    ?? throw new InvalidOperationException($"Order Id {orderUpdate.OrderId} not found");
 
-            //existingOrder.OrderDate = orderUpdate.OrderDate;
-            //// TODO: this is actually bad and will likely leave orphaned OrderProducts
-            //// in the database
-            //existingOrder.OrderProducts = orderUpdate.OrderProducts;
-            //existingOrder.LastUpdatedDate = DateTime.Now;
-            //await db.SaveChangesAsync().ConfigureAwait(false);
-            //throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Copy values of one entity to another, to be implemented by descendants. 
+        /// Recommend making use of automapper or some such. Note that CopyEntity should NOT
+        /// set any of the BaseEntity values. Especially Id and ResourceId.
+        /// </summary>
+        /// <param name="destinationEntity"></param>
+        /// <param name="sourceEntity"></param>
+        protected abstract void CopyEntity(T destinationEntity, T sourceEntity);
+
+        public async Task<T> UpdateAsync(T destinationEntity) {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(destinationEntity));
+            var existingEntity = await GetAsync(destinationEntity.Id)
+                ?? await GetAsync(destinationEntity.ResourceId);
+            if (existingEntity == null) {
+                return await AddAsync(destinationEntity).ConfigureAwait(false);
+            }
+            
+            int id = existingEntity.Id;
+            Guid resourceId = existingEntity.ResourceId;
+            CopyEntity(destinationEntity, existingEntity);
+            
+            // set updated date and ensure CopyEntity implementations don't reset id or resource id
+            existingEntity.UpdatedDate = DateTime.UtcNow;
+            existingEntity.Id = id;
+            existingEntity.ResourceId = resourceId;
+
+            await db.SaveChangesAsync().ConfigureAwait(false);
+            return existingEntity;  
+        }
     }
 }
