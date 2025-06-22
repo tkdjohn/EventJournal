@@ -14,7 +14,12 @@ namespace EventJournal.DomainEntities.UserTypes {
         [Required] public required int DetailTypeId { get; set; }
 
         internal override void CopyUserValues<T>(T source) {
-            throw new NotImplementedException();
+            var sourceIntensity = source as Intensity ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Intensity)}");
+            Name = sourceIntensity.Name;
+            Level = sourceIntensity.Level;
+            Description = sourceIntensity.Description;
+            DefaultSortType = sourceIntensity.DefaultSortType;
+            DetailTypeId = sourceIntensity.DetailTypeId;
         }
     }
 

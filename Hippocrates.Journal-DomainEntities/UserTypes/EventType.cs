@@ -10,7 +10,7 @@ namespace EventJournal.DomainEntities.UserTypes {
         //TODO: this code really belongs in a service or maybe repo
         public static IEnumerable<EventType> DefaultEventTypes() {
             return [
-                GetDefaultEventType(),
+                CreateDefaultEventType(),
                 new EventType { EventTypeResourceId = Guid.NewGuid(), Name = "Exercise" },
                 new EventType { EventTypeResourceId = Guid.NewGuid(), Name = "Bathroom Visit" },
                 new EventType { EventTypeResourceId = Guid.NewGuid(), Name = "Food Consumption" },
@@ -18,12 +18,14 @@ namespace EventJournal.DomainEntities.UserTypes {
             ];
         }
 
-        public static EventType GetDefaultEventType() {
+        public static EventType CreateDefaultEventType() {
             return new EventType { EventTypeResourceId = Guid.NewGuid(), Name = "Random Event", Description = "Use for tracking random things like onset of pain, headache, or whatever that isn't directly associated with a specific even type." };
         }
 
         internal override void CopyUserValues<T>(T source) {
-            throw new NotImplementedException();
+            var sourceEventType = source as EventType ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(EventType)}");
+            Name = sourceEventType.Name;
+            Description = sourceEventType.Description;
         }
     }
 }

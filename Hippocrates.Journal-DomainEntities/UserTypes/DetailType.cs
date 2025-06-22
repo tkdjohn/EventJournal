@@ -10,7 +10,9 @@ namespace EventJournal.DomainEntities.UserTypes {
         public IEnumerable<Intensity> Intensities { get; set; } = [];
 
         internal override void CopyUserValues<T>(T source) {
-            throw new NotImplementedException();
+            var sourceDetailType = source as DetailType ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(DetailType)}");
+            Name = sourceDetailType.Name;
+            Description = sourceDetailType.Description;
         }
     }
 }

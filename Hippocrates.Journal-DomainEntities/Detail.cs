@@ -11,7 +11,11 @@ namespace EventJournal.DomainEntities {
         [MaxLength(512)] public string? Notes { get; set; }
 
         internal override void CopyUserValues<T>(T source) {
-            throw new NotImplementedException();
+            var sourceDetail = source as Detail ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Detail)}");
+            Event = sourceDetail.Event;
+            DetailType = sourceDetail.DetailType;
+            Intensity = sourceDetail.Intensity;
+            Notes = sourceDetail.Notes;
         }
     }
 }
