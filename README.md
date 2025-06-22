@@ -13,6 +13,10 @@ Possible features include:
 User definable symptom lists
 User definable symptom intensity descriptions (tied to numeric values for graphing/data presentation purposes) 
 
+## NOTES
+
+### Intensity 
+
 #### Pain level could be something like 
 - None (0) 
 - Slight to mild Discomfort (1)
@@ -31,5 +35,10 @@ journal entries should also have user defined tags
 not sure how to implement tags just yet, maybe a tag entity and table
 and a tags list table (with an id) and have journal entry track taglist id
 
+
+### TODO:
+EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
+add Events domain service - manages Events and Detiails
+add UserType service - manages all the User configurable types.
 
 

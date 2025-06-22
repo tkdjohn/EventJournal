@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Hippocrates.Journa.WebAPI</RootNamespace>
+    <RootNamespace>EventJournal.WebAPI</RootNamespace>
     <UserSecretsId>8c63a320-2c3e-49fe-b702-bc5449d6d6fa</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
