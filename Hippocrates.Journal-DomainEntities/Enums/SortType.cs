@@ -1,4 +1,4 @@
-﻿namespace Hippocrates.Journal.DomainEntities.Enums {
+﻿namespace EventJournal.DomainEntities.Enums {
     public enum SortType {
         Custom, Ascending, Descending
     }

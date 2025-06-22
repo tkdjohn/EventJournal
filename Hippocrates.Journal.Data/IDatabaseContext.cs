@@ -1,13 +1,14 @@
-﻿using Hippocrates.Journal.DomainEntities;
+﻿using EventJournal.DomainEntities;
+using EventJournal.DomainEntities.UserTypes;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hippocrates.Journal.Data {
+namespace EventJournal.Data {
     public interface IDatabaseContext {
-        DbSet<Symptom> Symptoms { get; set; }
-        DbSet<Intensity> Intensities { get; set; }
         DbSet<Event> Events { get; set; }
         DbSet<EventType> EventTypes { get; set; }
-        DbSet<EventSymptom> EventSymptoms { get; set; }
+        DbSet<Detail> Details { get; set; }
+        DbSet<DetailType> DetailTypes { get; set; }
+        DbSet<Intensity> Intensities { get; set; }
 
         Task SaveChangesAsync();
     }

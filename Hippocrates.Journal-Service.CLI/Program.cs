@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Hippocrates.Journal.Data;
+using EventJournal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

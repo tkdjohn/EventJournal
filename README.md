@@ -1,9 +1,9 @@
-# Hippocrates Journal
-Collect basic timestamped symptom data with the intent that the data can be analyzed/mined to see longer term patterns. 
+# Event Journal
+Collect basic timestamped event data with the intent that the data can be analyzed/mined to see longer term patterns. 
 
-To start, this will focus on symptoms and intensity and intentionally be a single user app. Longer term, the idea is to be able to couple this data with other similar journal data (such as food and medicine tracking). With this in mind the journal entries will be fairly generic in nature.
-Maybe rather than tracking symptoms, food, exercise separately, we track EVENTS
-with user defined event types such as
+Originally this was intended to track symptoms and intensity. But evolved into more of an event tracker system. 
+The concept of Intensity is still a bit muddy, but the idea is that events of a particular even type can be rated on a user defined scale. For example a headache event can have a pain intensity rating. Where an exercise type event could have a distance or workout intensity.
+
 
 
 ## Features
@@ -13,8 +13,7 @@ Possible features include:
 User definable symptom lists
 User definable symptom intensity descriptions (tied to numeric values for graphing/data presentation purposes) 
 
-####	Pain level could be something like 
-		
+#### Pain level could be something like 
 - None (0) 
 - Slight to mild Discomfort (1)
 - I need an OTC painkiller (2)
@@ -26,10 +25,10 @@ User definable symptom intensity descriptions (tied to numeric values for graphi
 - Trace (on TP only) (1) 
 - Minor (drops visible in water) (2)
 - Major (water mostly red) (3)
-- Intense (water completly red) (4)
+- Intense (water completely red) (4)
 
 journal entries should also have user defined tags 
-not sure how to implement tags jsut yet, maybe a tag entity and table
+not sure how to implement tags just yet, maybe a tag entity and table
 and a tags list table (with an id) and have journal entry track taglist id
 
 

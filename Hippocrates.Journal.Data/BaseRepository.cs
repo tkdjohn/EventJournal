@@ -1,7 +1,7 @@
-﻿using Hippocrates.Journal.DomainEntities;
+﻿using EventJournal.DomainEntities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hippocrates.Journal.Data {
+namespace EventJournal.Data {
     public abstract class BaseRepository<T>(IDatabaseContext db, DbSet<T> table) where T : BaseEntity{
         private readonly IDatabaseContext db = db;
         private readonly DbSet<T> table = table;
@@ -22,32 +22,16 @@ namespace Hippocrates.Journal.Data {
             return await table.FirstOrDefaultAsync(t => t.ResourceId == resourceId).ConfigureAwait(false); 
         }
 
-
-        /// <summary>
-        /// Copy values of one entity to another, to be implemented by descendants. 
-        /// Recommend making use of automapper or some such. Note that CopyEntity should NOT
-        /// set any of the BaseEntity values. Especially Id and ResourceId.
-        /// </summary>
-        /// <param name="destinationEntity"></param>
-        /// <param name="sourceEntity"></param>
-        protected abstract void CopyEntity(T destinationEntity, T sourceEntity);
-
-        public async Task<T> UpdateAsync(T destinationEntity) {
-            ArgumentException.ThrowIfNullOrEmpty(nameof(destinationEntity));
-            var existingEntity = await GetAsync(destinationEntity.Id)
-                ?? await GetAsync(destinationEntity.ResourceId);
+        // TODO: this seems like it could/should be an extension method
+        public async Task<T> SaveEntity(T source) {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(source));
+            var existingEntity = await GetAsync(source.Id)
+                ?? await GetAsync(source.ResourceId);
             if (existingEntity == null) {
-                return await AddAsync(destinationEntity).ConfigureAwait(false);
+                return await AddAsync(source).ConfigureAwait(false);
             }
             
-            int id = existingEntity.Id;
-            Guid resourceId = existingEntity.ResourceId;
-            CopyEntity(destinationEntity, existingEntity);
-            
-            // set updated date and ensure CopyEntity implementations don't reset id or resource id
-            existingEntity.UpdatedDate = DateTime.UtcNow;
-            existingEntity.Id = id;
-            existingEntity.ResourceId = resourceId;
+            existingEntity.UpdateEntity(source);
 
             await db.SaveChangesAsync().ConfigureAwait(false);
             return existingEntity;  
