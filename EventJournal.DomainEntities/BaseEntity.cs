@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventJournal.DomainEntities {
     public abstract class BaseEntity {
-        [Required] public DateTime CreatedDate { get; set; } = DateTime.Now;
-        [Required] public DateTime UpdatedDate { get; set; } = DateTime.MinValue;
+        [Required] public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        [Required] public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
         [NotMapped]
         [Required] public int Id { get; set; }
         [NotMapped]

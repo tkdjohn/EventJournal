@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hippocrates.Journal.Data\EventJournal.Data.csproj" />
+    <ProjectReference Include="..\EventJournal.DomainEntities\EventJournal.DomainEntities.csproj" />
+    <ProjectReference Include="..\EventJournal.DomainService\EventJournal.DomainService.csproj" />
   </ItemGroup>
 </Project>

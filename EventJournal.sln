@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.CLI", "EventJournal.Service.CLI\EventJournal.CLI.csproj", "{D0E93737-A883-4020-9C99-E6C1D70D1237}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.CLI", "EventJournal.CLI\EventJournal.CLI.csproj", "{D0E93737-A883-4020-9C99-E6C1D70D1237}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainEntities", "EventJournal.DomainEntities\EventJournal.DomainEntities.csproj", "{2F884BE1-F88D-45F7-A3E0-480FCA94541A}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.WebAPI", "EventJournal.WebAPI\EventJournal.WebAPI.csproj", "{AFC2B8DD-6CDE-450F-9181-93B2B67983D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.Data", "EventJournal.Data\EventJournal.Data.csproj", "{CD1F9E2E-4F39-4E6C-B018-B3BF858D57A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainService", "EventJournal.DomainService\EventJournal.DomainService.csproj", "{EB6275FF-4E73-466D-9A44-EFDBF992CA75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{CD1F9E2E-4F39-4E6C-B018-B3BF858D57A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD1F9E2E-4F39-4E6C-B018-B3BF858D57A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD1F9E2E-4F39-4E6C-B018-B3BF858D57A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
