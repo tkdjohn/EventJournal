@@ -49,18 +49,18 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
 
 ### TODO
-- fix all awaits to call ConfigureAwait(false) to avoid deadlocks in UI.
-    - consider a `ConfigureAwait` extension method that does this automatically.
-    - consider adding an async analyzer
-
 - refactor services to consume DTOs (models) instead of entities directly.
 - unit tests for repositories and services. Also base entity code?
 - CLI interface to call service methods
 - Web API to call service methods
 - Add common BootStrap code to be consumed by cli and web api projects
-- 
+    - remove microsoft.extension.hosting pkg where not needed
+- move initializer code to an appropriate place 
+    - want to let user get some defaults to start with 
+    - but also wan to use these defaults for testing
 ### Future Considerations
-- basic CRUD web UI
+- basic CRUD web UI 
+    - want to add the ability to add new types on the fly as a new event is added
 - Integration tests for  web api.
 - `Event` entries could also have user defined tags. (Maybe `Details` could have tags too?)
 not sure how to implement tags just yet, maybe a tag entity and table

@@ -28,7 +28,6 @@ namespace EventJournal.Data {
             return db.SaveChangesAsync();
         }
 
-        // TODO: this seems like it could/should be an extension method
         public async Task<T> AddUpdateAsync(T source) {
             ArgumentException.ThrowIfNullOrEmpty(nameof(source));
             var existingEntity = await GetByIdAsync(source.Id)

@@ -12,7 +12,7 @@ internal class Program {
         var EventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Product Logic module");
         var UserTypeServes = services.GetService<IUserTypeService>() ?? throw new Exception("Unable to locate a valid Order Logic module");
 
-        //TODO: move to shared startup.cs
+        //TODO: move to shared startup.cs and remove this method and remove microsoft.extension.hosting pkg
         static IServiceProvider CreateServiceCollection() {
             var servicecollection = new ServiceCollection()
                 .AddDbContext<IDatabaseContext, DatabaseContext>(options => {
