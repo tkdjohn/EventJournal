@@ -49,6 +49,9 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
 
 ### TODO
+- !!!! fix entity framework 
+    - Entities moved name spaces so we likely have to remove migrations and start all over
+    - need to finish models first
 - refactor services to consume DTOs (models) instead of entities directly.
 - unit tests for repositories and services. Also base entity code?
 - CLI interface to call service methods
@@ -58,6 +61,7 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 - move initializer code to an appropriate place 
     - want to let user get some defaults to start with 
     - but also wan to use these defaults for testing
+- Entity validators
 ### Future Considerations
 - basic CRUD web UI 
     - want to add the ability to add new types on the fly as a new event is added

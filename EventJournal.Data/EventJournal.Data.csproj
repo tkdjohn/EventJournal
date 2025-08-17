@@ -22,8 +22,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EventJournal.DomainEntities\EventJournal.DomainEntities.csproj" />
-  </ItemGroup>
-
 </Project>

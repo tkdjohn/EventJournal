@@ -1,5 +1,5 @@
 ﻿namespace EventJournal.DomainModels {
-    public class Class1 {
+    public class BaseModel {
 
     }
 }

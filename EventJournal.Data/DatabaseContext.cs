@@ -1,5 +1,5 @@
-﻿using EventJournal.DomainEntities;
-using EventJournal.DomainEntities.UserTypes;
+﻿using EventJournal.Data.Entities;
+using EventJournal.Data.Entities.UserTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventJournal.Data {

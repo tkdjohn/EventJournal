@@ -1,11 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EventJournal.DomainEntities.UserTypes {
+namespace EventJournal.Data.Entities.UserTypes {
     public class EventType : BaseEntity {
-        [Key] public int EventTypeId { get { return Id; } set { Id = value; } }
-        [Required] public Guid EventTypeResourceId { get { return ResourceId; } set { ResourceId = value; } }
-        [Required] public required string Name { get; set; }
-        [MaxLength(500)] public string? Description { get; set; }
+        [Key]
+        public int EventTypeId { get { return Id; } set { Id = value; } }
+
+        [Required]
+        public Guid EventTypeResourceId { get { return ResourceId; } set { ResourceId = value; } }
+
+        [Required]
+        public required string Name { get; set; }
+
+        [MaxLength(500)]
+        public string? Description { get; set; }
 
         //TODO: this code really belongs in a service or maybe repo
         public static IEnumerable<EventType> DefaultEventTypes() {

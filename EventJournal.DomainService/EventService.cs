@@ -1,5 +1,5 @@
 ﻿using EventJournal.Data;
-using EventJournal.DomainEntities;
+using EventJournal.Data.Entities;
 
 namespace EventJournal.DomainService {
     public class EventService(

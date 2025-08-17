@@ -1,5 +1,5 @@
-﻿using EventJournal.Data.UserTypeRepositories;
-using EventJournal.DomainEntities.UserTypes;
+﻿using EventJournal.Data.Entities.UserTypes;
+using EventJournal.Data.UserTypeRepositories;
 
 namespace EventJournal.DomainService {
     public class UserTypeService(

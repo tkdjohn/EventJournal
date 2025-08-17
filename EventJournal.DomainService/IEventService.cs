@@ -1,4 +1,4 @@
-﻿using EventJournal.DomainEntities;
+﻿using EventJournal.Data.Entities;
 
 namespace EventJournal.DomainService {
     public interface IEventService {

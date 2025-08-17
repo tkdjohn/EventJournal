@@ -1,4 +1,4 @@
-﻿using EventJournal.DomainEntities;
+﻿using EventJournal.Data.Entities;
 
 namespace EventJournal.Data {
     public interface IBaseRepository<T> where T : BaseEntity {

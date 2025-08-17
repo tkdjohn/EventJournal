@@ -1,4 +1,4 @@
-﻿using EventJournal.DomainEntities;
+﻿using EventJournal.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventJournal.Data {
