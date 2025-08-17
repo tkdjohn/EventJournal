@@ -1,4 +1,4 @@
-﻿using EventJournal.DomainEntities.Enums;
+﻿using EventJournal.DomainEntities.Enumerations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

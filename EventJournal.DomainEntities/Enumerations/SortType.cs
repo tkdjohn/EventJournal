@@ -1,4 +1,4 @@
-﻿namespace EventJournal.DomainEntities.Enums {
+﻿namespace EventJournal.DomainEntities.Enumerations {
     public enum SortType {
         Custom, Ascending, Descending
     }

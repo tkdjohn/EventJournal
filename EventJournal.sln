@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.Data", "EventJ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainService", "EventJournal.DomainService\EventJournal.DomainService.csproj", "{EB6275FF-4E73-466D-9A44-EFDBF992CA75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainModels", "EventJournal.DomainModels\EventJournal.DomainModels.csproj", "{153C0741-E492-490C-8C90-FB5805FD0AFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB6275FF-4E73-466D-9A44-EFDBF992CA75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{153C0741-E492-490C-8C90-FB5805FD0AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{153C0741-E492-490C-8C90-FB5805FD0AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{153C0741-E492-490C-8C90-FB5805FD0AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{153C0741-E492-490C-8C90-FB5805FD0AFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

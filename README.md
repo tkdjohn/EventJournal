@@ -38,11 +38,30 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 - Major (water mostly red) (3)
 - Intense (water completely red) (4)
 
+#### Exercise Intensity could be
+- Took it easy (0)
+- Pushed a bit (1)
+- Heart Pumping and light sweating (2)
+- Breathing Hard and sweating good (3)
+- Hardcore Must take it easy tomorrow (4)
+
+#### Entity Framework help
+EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
+
 ### TODO
-
-populate Events domain service - manages Events and Details
-populate UserType service - manages all the User configurable types.
-
-Event entries should also have user defined tags.
+- fix all awaits to call ConfigureAwait(false) to avoid deadlocks in UI apps.
+- - consider a `ConfigureAwait` extension method that does this automatically.
+- c consider adding an async analyzer
+- populate UserType service - manages all the User configurable types.
+- refactor services to consume DTOs (models) instead of entities directly.
+- unit tests for repositories and services. Also base entity code?
+- CLI interface to call service methods
+- Web API to call service methods
+- Add common BootStrap code to be consumed by cli and web api projects
+- 
+### Future Considerations
+- basic CRUD web UI
+- Integration tests for  web api.
+- `Event` entries could also have user defined tags. (Maybe `Details` could have tags too?)
 not sure how to implement tags just yet, maybe a tag entity and table
 and a tags list table (with an id) and have journal entry track tag-list id
