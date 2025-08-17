@@ -49,10 +49,10 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
 
 ### TODO
-- fix all awaits to call ConfigureAwait(false) to avoid deadlocks in UI apps.
-- - consider a `ConfigureAwait` extension method that does this automatically.
-- c consider adding an async analyzer
-- populate UserType service - manages all the User configurable types.
+- fix all awaits to call ConfigureAwait(false) to avoid deadlocks in UI.
+    - consider a `ConfigureAwait` extension method that does this automatically.
+    - consider adding an async analyzer
+
 - refactor services to consume DTOs (models) instead of entities directly.
 - unit tests for repositories and services. Also base entity code?
 - CLI interface to call service methods

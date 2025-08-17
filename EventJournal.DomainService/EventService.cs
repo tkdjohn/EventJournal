@@ -8,30 +8,30 @@ namespace EventJournal.DomainService {
         //TODO: refactor to use a generic repository interface if possible
         //TODO: refactor to use models(DTOs) instead of entities
 
-        public async Task<IEnumerable<Event>> GetAllEventsAsync() {
-            return await eventRepository.GetAllAsync();
+        public Task<IEnumerable<Event>> GetAllEventsAsync() {
+            return eventRepository.GetAllAsync();
         }
-        public async Task<Event?> GetEventByIdAsync(Guid resourceId) {
-            return await eventRepository.GetByResourceIdAsync(resourceId);
+        public Task<Event?> GetEventByIdAsync(Guid resourceId) {
+            return eventRepository.GetByResourceIdAsync(resourceId);
         }
-        public async Task AddUpdateEventAsync(Event updatedEvent) {
-            await eventRepository.AddUpdateAsync(updatedEvent);
+        public Task AddUpdateEventAsync(Event updatedEvent) {
+            return eventRepository.AddUpdateAsync(updatedEvent);
         }
-        public async Task DeleteEventAsync(Event entity) {
-            await eventRepository.DeleteAsync(entity);
+        public Task DeleteEventAsync(Event entity) {
+            return eventRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<Detail>> GetAllDetailsAsync() {
-            return await detailRepository.GetAllAsync();
+        public Task<IEnumerable<Detail>> GetAllDetailsAsync() {
+            return detailRepository.GetAllAsync();
         }
-        public async Task<Detail?> GetDetailByIdAsync(Guid resourceId) {
-            return await detailRepository.GetByResourceIdAsync(resourceId);
+        public Task<Detail?> GetDetailByIdAsync(Guid resourceId) {
+            return detailRepository.GetByResourceIdAsync(resourceId);
         }
-        public async Task AddUpdateDetailAsync(Detail updatedDetail) {
-            await detailRepository.AddUpdateAsync(updatedDetail);
+        public Task AddUpdateDetailAsync(Detail updatedDetail) {
+            return detailRepository.AddUpdateAsync(updatedDetail);
         }
-        public async Task DeleteDetailAsync(Detail entity) {
-            await detailRepository.DeleteAsync(entity);
+        public Task DeleteDetailAsync(Detail entity) {
+            return detailRepository.DeleteAsync(entity);
         }
     }
 }

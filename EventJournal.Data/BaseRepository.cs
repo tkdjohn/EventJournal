@@ -19,13 +19,13 @@ namespace EventJournal.Data {
             return await table.FindAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<T?> GetByResourceIdAsync(Guid resourceId) {
-            return await table.FirstOrDefaultAsync(t => t.ResourceId == resourceId).ConfigureAwait(false);
+        public Task<T?> GetByResourceIdAsync(Guid resourceId) {
+            return table.FirstOrDefaultAsync(t => t.ResourceId == resourceId);
         }
 
-        public async Task DeleteAsync(T entity) {
+        public Task DeleteAsync(T entity) {
             table.Remove(entity);
-            await db.SaveChangesAsync().ConfigureAwait(false);
+            return db.SaveChangesAsync();
         }
 
         // TODO: this seems like it could/should be an extension method

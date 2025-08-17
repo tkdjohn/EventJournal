@@ -9,43 +9,43 @@ namespace EventJournal.DomainService {
         //TODO: refactor to use a generic repository interface if possible
         //TODO: refactor to use models(DTOs) instead of entities
 
-        public async Task<IEnumerable<DetailType>> GetAllDetailTypesAsync() {
-            return await detailRepository.GetAllAsync();
+        public Task<IEnumerable<DetailType>> GetAllDetailTypesAsync() {
+            return detailRepository.GetAllAsync();
         }
-        public async Task<DetailType?> GetDetailTypeByIdAsync(Guid resourceId) {
-            return await detailRepository.GetByResourceIdAsync(resourceId);
+        public Task<DetailType?> GetDetailTypeByIdAsync(Guid resourceId) {
+            return detailRepository.GetByResourceIdAsync(resourceId);
         }
-        public async Task<DetailType> AddUpdateDetailTypeAsync(DetailType updatedDetailType) {
-            return await detailRepository.AddUpdateAsync(updatedDetailType);
+        public Task<DetailType> AddUpdateDetailTypeAsync(DetailType updatedDetailType) {
+            return detailRepository.AddUpdateAsync(updatedDetailType);
         }
-        public async Task DeleteDetailTypeAsync(DetailType entity) {
-            await detailRepository.DeleteAsync(entity);
-        }
-
-        public async Task<IEnumerable<EventType>> GetAllEventTypesAsync() {
-            return await eventTypeRepository.GetAllAsync();
-        }
-        public async Task<EventType?> GetEventTypeByIdAsync(Guid resourceId) {
-            return await eventTypeRepository.GetByResourceIdAsync(resourceId);
-        }
-        public async Task<EventType> AddUpdateEventTypeAsync(EventType updatedEventType) {
-            return await eventTypeRepository.AddUpdateAsync(updatedEventType);
-        }
-        public async Task DeleteEventTypeAsync(EventType entity) {
-            await eventTypeRepository.DeleteAsync(entity);
+        public Task DeleteDetailTypeAsync(DetailType entity) {
+            return detailRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<Intensity>> GetAllIntensitiesAsync() {
-            return await intensityRepository.GetAllAsync();
+        public Task<IEnumerable<EventType>> GetAllEventTypesAsync() {
+            return eventTypeRepository.GetAllAsync();
         }
-        public async Task<Intensity?> GetIntensityByIdAsync(Guid resourceId) {
-            return await intensityRepository.GetByResourceIdAsync(resourceId);
+        public Task<EventType?> GetEventTypeByIdAsync(Guid resourceId) {
+            return eventTypeRepository.GetByResourceIdAsync(resourceId);
         }
-        public async Task<Intensity> UpdateIntensityAsync(Intensity updatedIntensity) {
-            return await intensityRepository.AddUpdateAsync(updatedIntensity);
+        public Task<EventType> AddUpdateEventTypeAsync(EventType updatedEventType) {
+            return eventTypeRepository.AddUpdateAsync(updatedEventType);
         }
-        public async Task DeleteIntensityAsync(Intensity entity) {
-            await intensityRepository.DeleteAsync(entity);
+        public Task DeleteEventTypeAsync(EventType entity) {
+            return eventTypeRepository.DeleteAsync(entity);
+        }
+
+        public Task<IEnumerable<Intensity>> GetAllIntensitiesAsync() {
+            return intensityRepository.GetAllAsync();
+        }
+        public Task<Intensity?> GetIntensityByIdAsync(Guid resourceId) {
+            return intensityRepository.GetByResourceIdAsync(resourceId);
+        }
+        public Task<Intensity> UpdateIntensityAsync(Intensity updatedIntensity) {
+            return intensityRepository.AddUpdateAsync(updatedIntensity);
+        }
+        public Task DeleteIntensityAsync(Intensity entity) {
+            return intensityRepository.DeleteAsync(entity);
         }
     }
 }
