@@ -1,15 +1,15 @@
-﻿using EventJournal.Data.Entities;
+﻿using EventJournal.DomainDto;
 
 namespace EventJournal.DomainService {
     public interface IEventService {
-        Task<IEnumerable<Event>> GetAllEventsAsync();
-        Task<Event?> GetEventByIdAsync(Guid resourceId);
-        Task AddUpdateEventAsync(Event updatedEvent);
-        Task DeleteEventAsync(Event entity);
+        Task<IEnumerable<EventDto>> GetAllEventsAsync();
+        Task<EventDto?> GetEventByIdAsync(Guid resourceId);
+        Task<EventDto> AddUpdateEventAsync(EventDto dto);
+        Task DeleteEventAsync(Guid resourceId);
 
-        Task<IEnumerable<Detail>> GetAllDetailsAsync();
-        Task<Detail?> GetDetailByIdAsync(Guid resourceId);
-        Task AddUpdateDetailAsync(Detail updatedDetail);
-        Task DeleteDetailAsync(Detail entity);
+        Task<IEnumerable<DetailDto>> GetAllDetailsAsync();
+        Task<DetailDto?> GetDetailByIdAsync(Guid resourceId);
+        Task<DetailDto> AddUpdateDetailAsync(DetailDto dto);
+        Task DeleteDetailAsync(Guid resourceId);
     }
 }

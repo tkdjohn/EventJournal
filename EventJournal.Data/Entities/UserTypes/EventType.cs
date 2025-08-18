@@ -14,7 +14,7 @@ namespace EventJournal.Data.Entities.UserTypes {
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        //TODO: this code really belongs in a service or maybe repo
+        //TODO: does this belong here??
         public static IEnumerable<EventType> DefaultEventTypes() {
             return [
                 CreateDefaultEventType(),
@@ -25,6 +25,7 @@ namespace EventJournal.Data.Entities.UserTypes {
             ];
         }
 
+        //TODO: does this belong here??
         public static EventType CreateDefaultEventType() {
             return new EventType { EventTypeResourceId = Guid.NewGuid(), Name = "Random Event", Description = "Use for tracking random things like onset of pain, headache, or whatever that isn't directly associated with a specific even type." };
         }

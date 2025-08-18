@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using EventJournal.CLI;
 using EventJournal.Data;
 using EventJournal.DomainService;
 using Microsoft.EntityFrameworkCore;
@@ -87,7 +86,8 @@ internal class Program {
                         options.TimestampFormat = "HH:mm:ss.fff ";
                         options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
                     });
-                });
+                })
+                .AddAutoMapper(cfg => { }, typeof(DomainMapperProfile));
 
 
             return servicecollection.BuildServiceProvider();

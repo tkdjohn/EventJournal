@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.Data", "EventJ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainService", "EventJournal.DomainService\EventJournal.DomainService.csproj", "{EB6275FF-4E73-466D-9A44-EFDBF992CA75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainModels", "EventJournal.DomainModels\EventJournal.DomainModels.csproj", "{153C0741-E492-490C-8C90-FB5805FD0AFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventJournal.DomainDto", "EventJournal.DomainModels\EventJournal.DomainDto.csproj", "{153C0741-E492-490C-8C90-FB5805FD0AFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +48,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50C11A8B-C5F5-42E2-BCBB-F012EE87507C}
 	EndGlobalSection
 EndGlobal

@@ -1,18 +1,22 @@
-﻿using EventJournal.Data.Entities.UserTypes;
+﻿using EventJournal.DomainDto.UserTypes;
 
 namespace EventJournal.DomainService {
     public interface IUserTypeService {
-        Task<DetailType> AddUpdateDetailTypeAsync(DetailType updatedDetailType);
-        Task<EventType> AddUpdateEventTypeAsync(EventType updatedEventType);
-        Task DeleteDetailTypeAsync(DetailType entity);
-        Task DeleteEventTypeAsync(EventType entity);
-        Task DeleteIntensityAsync(Intensity entity);
-        Task<IEnumerable<DetailType>> GetAllDetailTypesAsync();
-        Task<IEnumerable<EventType>> GetAllEventTypesAsync();
-        Task<IEnumerable<Intensity>> GetAllIntensitiesAsync();
-        Task<DetailType?> GetDetailTypeByIdAsync(Guid resourceId);
-        Task<EventType?> GetEventTypeByIdAsync(Guid resourceId);
-        Task<Intensity?> GetIntensityByIdAsync(Guid resourceId);
-        Task<Intensity> UpdateIntensityAsync(Intensity updatedIntensity);
+
+
+        Task<IEnumerable<DetailTypeDto>> GetAllDetailTypesAsync();
+        Task<DetailTypeDto?> GetDetailTypeByIdAsync(Guid resourceId);
+        Task<DetailTypeDto> AddUpdateDetailTypeAsync(DetailTypeDto dto);
+        Task DeleteDetailTypeAsync(Guid resourceId);
+
+        Task<IEnumerable<EventTypeDto>> GetAllEventTypesAsync();
+        Task<EventTypeDto?> GetEventTypeByIdAsync(Guid resourceId);
+        Task<EventTypeDto> AddUpdateEventTypeAsync(EventTypeDto dto);
+        Task DeleteEventTypeAsync(Guid resourceId);
+
+        Task<IEnumerable<IntensityDto>> GetAllIntensitiesAsync();
+        Task<IntensityDto?> GetIntensityByIdAsync(Guid resourceId);
+        Task<IntensityDto> AddUpdateIntensityAsync(IntensityDto dto);
+        Task DeleteIntensityAsync(Guid resourceId);
     }
 }
