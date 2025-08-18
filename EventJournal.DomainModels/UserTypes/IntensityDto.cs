@@ -1,6 +1,5 @@
 ﻿using EventJournal.DomainDto.Enumerations;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventJournal.DomainDto.UserTypes {
     public class IntensityDto : BaseDto {
@@ -18,9 +17,13 @@ namespace EventJournal.DomainDto.UserTypes {
         [Required]
         public required SortType DefaultSortType { get; set; }
 
-        [ForeignKey(nameof(DetailTypeId))]
+
         [Required]
-        public required int DetailTypeId { get; set; }
+        public required Guid DetailTypeId { get; set; }
+        //TODO:  does this belong here??
+        public static IntensityDto CreateDefaultIntensityDto(Guid detailTypeId) {
+            return new IntensityDto { IntensityResourceId = Guid.NewGuid(), DefaultSortType = SortType.Descending, Level = 1, Name = "Default Intensity DTO", Description = "Description", DetailTypeId=detailTypeId };
+        }
 
         internal override void CopyUserValues<T>(T source) {
             var sourceIntensity = source as IntensityDto ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(IntensityDto)}");
@@ -28,7 +31,6 @@ namespace EventJournal.DomainDto.UserTypes {
             Level = sourceIntensity.Level;
             Description = sourceIntensity.Description;
             DefaultSortType = sourceIntensity.DefaultSortType;
-            DetailTypeId = sourceIntensity.DetailTypeId;
         }
     }
 }

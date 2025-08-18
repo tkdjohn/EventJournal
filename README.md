@@ -7,10 +7,9 @@ The concept of Intensity is still a bit muddy, but the idea is that events of a 
 
 ## Features
 
-Features include:
-User definable event types (ex. exercise, meal, headache )
-USer definable detail types (ex. muscle pain, bleeding, restaurant or food eaten, pain location, pain level, nausea )
-User definable detail intensity descriptions (tied to numeric values for graphing/data presentation purposes)
+- User definable event types (ex. exercise, meal, headache )
+- USer definable detail types (ex. muscle pain, bleeding, restaurant or food eaten, pain location, pain level, nausea )
+- User definable detail intensity descriptions (tied to numeric values for graphing/data presentation purposes)
 
 ## NOTES
 
@@ -27,7 +26,7 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 - Slight to mild Discomfort (1)
 - I need an OTC painkiller (2)
 - I'm going to limit my activity (3)
-- I can't function (4)
+- I can't function normally (4)
 - Take me to the ER (5)
 
 #### Bleeding could be
@@ -48,11 +47,12 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 #### Entity Framework help
 EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
 
+
+### NEXT STEPS
+- add default data from CLI isn't working
+    - looks like you have to add detail type first, then add intensities
+    - then you can add everything else?
 ### TODO
-- !!!! fix entity framework 
-    - Entities moved name spaces so we likely have to remove migrations and start all over
-    - need to finish models first
-- refactor services to consume DTOs (models) instead of entities directly.
 - unit tests for repositories and services. Also base entity code?
 - CLI interface to call service methods
 - Web API to call service methods

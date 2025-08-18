@@ -7,6 +7,8 @@ using EventJournal.DomainDto.UserTypes;
 namespace EventJournal.DomainService {
     public class DomainMapperProfile : Profile {
         public DomainMapperProfile() {
+
+            //TODO: use reflection to find objects that inherit from BaseDto and map them
             CreateMap<Intensity, IntensityDto>().ReverseMap();
             CreateMap<DetailType, DetailTypeDto>().ReverseMap();
             CreateMap<Detail, DetailDto>().ReverseMap();

@@ -13,7 +13,7 @@ namespace EventJournal.DomainDto.UserTypes {
         //TODO: does this belong here??
         public static IEnumerable<EventTypeDto> DefaultEventTypes() {
             return [
-                CreateDefaultEventType(),
+                CreateDefaultEventTypeDto(),
                 new EventTypeDto { EventTypeResourceId = Guid.NewGuid(), Name = "Exercise" },
                 new EventTypeDto { EventTypeResourceId = Guid.NewGuid(), Name = "Bathroom Visit" },
                 new EventTypeDto { EventTypeResourceId = Guid.NewGuid(), Name = "Food Consumption" },
@@ -22,7 +22,7 @@ namespace EventJournal.DomainDto.UserTypes {
         }
 
         //TODO:  does this belong here??
-        public static EventTypeDto CreateDefaultEventType() {
+        public static EventTypeDto CreateDefaultEventTypeDto() {
             return new EventTypeDto { EventTypeResourceId = Guid.NewGuid(), Name = "Random Event", Description = "Use for tracking random things like onset of pain, headache, or whatever that isn't directly associated with a specific even type." };
         }
 
@@ -32,6 +32,5 @@ namespace EventJournal.DomainDto.UserTypes {
             Description = sourceEventType.Description;
         }
     }
-
 }
 

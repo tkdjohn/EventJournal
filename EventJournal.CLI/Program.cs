@@ -1,71 +1,74 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using EventJournal.CLI;
 using EventJournal.Data;
+using EventJournal.Data.UserTypeRepositories;
+using EventJournal.DomainDto;
 using EventJournal.DomainService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 internal class Program {
     private static async Task Main(string[] args) {
 
         var services = CreateServiceCollection();
-        var EventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Product Logic module");
-        var UserTypeServes = services.GetService<IUserTypeService>() ?? throw new Exception("Unable to locate a valid Order Logic module");
+        var eventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Product Logic module");
+        var userTypeService = services.GetService<IUserTypeService>() ?? throw new Exception("Unable to locate a valid Order Logic module");
         bool userIsDone = false;
         while (!userIsDone) {
-            //Console.WriteLine("Type '1' to add/update a product.");
-            //Console.WriteLine("Type '2' to view a product.");
-            //Console.WriteLine("Type '3' to view products that are in stock.");
-            //Console.WriteLine("Type '4' to view all products.");
+            //Console.WriteLine("Type '1' to ");
+            //Console.WriteLine("Type '2' to ");
+            //Console.WriteLine("Type '3' to ");
+            //Console.WriteLine("Type '4' to ");
+            //Console.WriteLine("Type '6' to ");
+            //Console.WriteLine("Type '7' to ");
+            //Console.WriteLine("Type '8' to ");
 
-            //Console.WriteLine("Type '6' to add/update an order.");
-            //Console.WriteLine("Type '7' to view an order.");
-            //Console.WriteLine("Type '8' to view all orders.");
-            //Console.WriteLine("Type 'a' to add some test data.");
-            //Console.WriteLine("Type 'x' to delete all data.");
-            //Console.WriteLine("Type 'q' to quit.");
+            Console.WriteLine("Type '9' to view all data");
+            Console.WriteLine("Type 'a' to add some test data.");
+            Console.WriteLine("Type 'x' to delete all data.");
+            Console.WriteLine("Type 'q' to quit.");
 
-            //// application will block here waiting for user to press <Enter>
-            //var userInput = CLIUtilities.GetStringFromUser("===> ").ToLower() ?? "";
+            // application will block here waiting for user to press <Enter>
+            var userInput = CLIUtilities.GetStringFromUser("===> ").ToLower() ?? "";
 
-            //switch (userInput[0]) {
-            //    case 'q':
-            //        userIsDone = true;
-            //        break;
-            //    case '1':
-            //        await AddUpdateEntity(GetEntityFromUser<Product>()).ConfigureAwait(false);
-            //        break;
-            //    case '2':
-            //        await ViewProduct().ConfigureAwait(false);
-            //        break;
-            //    case '3':
-            //        await ViewInStockProducts().ConfigureAwait(false);
-            //        break;
-            //    case '4':
-            //        await ViewAllProduct().ConfigureAwait(false);
-            //        break;
-            //    case '5':
+            switch (userInput[0]) {
+                case 'q':
+                    userIsDone = true;
+                    break;
+                //    case '1':
+                //        await AddUpdateEntity(GetEntityFromUser<Product>()).ConfigureAwait(false);
+                //        break;
+                //    case '2':
+                //        await ViewProduct().ConfigureAwait(false);
+                //        break;
+                //    case '3':
+                //        await ViewInStockProducts().ConfigureAwait(false);
+                //        break;
+                //    case '4':
+                //        await ViewAllProduct().ConfigureAwait(false);
+                //        break;
+                //    case '5':
 
-            //        break;
-            //    case '6':
-            //        await AddUpdateEntity(GetEntityFromUser<Order>()).ConfigureAwait(false);
-            //        break;
-            //    case '7':
-            //        await ViewOrder().ConfigureAwait(false);
-            //        break;
-            //    case '8':
-            //        await ViewallOrders().ConfigureAwait(false);
-            //        break;
-            //    case '9':
+                //        break;
+                //    case '6':
+                //        await AddUpdateEntity(GetEntityFromUser<Order>()).ConfigureAwait(false);
+                //        break;
+                //    case '7':
+                //        await ViewOrder().ConfigureAwait(false);
+                //        break;
+                case '8':
 
-            //        break;
-            //    case 'a':
-            //        await AddTestData(ProductService, OrderService).ConfigureAwait(false);
-            //        break;
-            //    case 'x':
-            //        await DeleteAllData(ProductService, OrderService).ConfigureAwait(false);
-            //        break;
-            //}
+                    break;
+                case '9':
+                    await ViewallDataAsync().ConfigureAwait(false);
+                    break;
+                case 'a':
+                    await AddTestDataAsync(eventService, userTypeService).ConfigureAwait(false);
+                    break;
+                case 'x':
+                    await DeleteAllDataAsync(eventService, userTypeService).ConfigureAwait(false);
+                    break;
+            }
             Console.WriteLine("\n===============================\n");
         }
         //TODO: move to shared startup.cs and remove this method and remove microsoft.extension.hosting pkg
@@ -74,8 +77,12 @@ internal class Program {
                 .AddDbContext<IDatabaseContext, DatabaseContext>(options => {
                     options.UseSqlite($"Data Source={DatabaseContext.GetSqliteDbPath()}");
                 })
+                .AddAutoMapper(cfg => { }, typeof(DomainMapperProfile))
                 .AddSingleton<IEventRepository, EventRepository>()
                 .AddSingleton<IDetailRepository, DetailRepository>()
+                .AddSingleton<IDetailTypeRepository, DetailTypeRepository>()
+                .AddSingleton<IEventTypeRepository, EventTypeRepository>()
+                .AddSingleton<IIntensityRepository, IntensityRepository>()
                 .AddSingleton<IEventService, EventService>()
                 .AddSingleton<IUserTypeService, UserTypeService>()
                 .AddLogging(options => {
@@ -86,28 +93,32 @@ internal class Program {
                         options.TimestampFormat = "HH:mm:ss.fff ";
                         options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
                     });
-                })
-                .AddAutoMapper(cfg => { }, typeof(DomainMapperProfile));
-
+                });
 
             return servicecollection.BuildServiceProvider();
         }
-        //async Task AddTestData(IProductService productService, IOrderService orderService) {
-        //    Console.WriteLine("Adding/Resetting test data.");
-        //    await AddUpdateEntity(new Product { ProductId = 1, Name = "Super Short Leash", Quantity = 10, Price = 1.99M }).ConfigureAwait(false);
-        //    await AddUpdateEntity(new Product { ProductId = 2, Name = "Dry Cat Food", Quantity = 0, Price = 15.99M }).ConfigureAwait(false);
-        //    await AddUpdateEntity(new Product { ProductId = 100, Name = "Designer Leash", Quantity = 1, Price = 99.99M }).ConfigureAwait(false);
-        //    await AddUpdateEntity(new Order { OrderId = 1, OrderDate = DateTime.Now, OrderProducts = { new OrderProduct { ProductId = 100, OrderQuantity = 5, UnitPrice = 99.99M } } }).ConfigureAwait(false);
-        //    await AddUpdateEntity(new Order { OrderId = 2, OrderDate = DateTime.Now, OrderProducts = { new OrderProduct { ProductId = 2, OrderQuantity = 3, UnitPrice = 15.99M } } }).ConfigureAwait(false);
-        //}
-        //static async Task DeleteAllData(IProductService productService, IOrderService orderService) {
-        //    var products = await productService.GetProductsAsync().ConfigureAwait(false);
-        //    products.ForEach(async p => await productService.RemoveProductAsync(p));
-
-        //    var orders = await orderService.GetOrdersAsync().ConfigureAwait(false);
-        //    orders.ForEach(async o => await orderService.RemoveOrderAsync(o).ConfigureAwait(false));
-        //}
-
+        async Task AddTestDataAsync(IEventService eventService, IUserTypeService userTypeService) {
+            Console.WriteLine("Adding/Resetting test data.");
+            await AddUpdateDtoAsync(EventDto.CreateDefaultEventDto()).ConfigureAwait(false);
+            //await AddUpdateEntity(new Product { ProductId = 2, Name = "Dry Cat Food", Quantity = 0, Price = 15.99M }).ConfigureAwait(false);
+            //await AddUpdateEntity(new Product { ProductId = 100, Name = "Designer Leash", Quantity = 1, Price = 99.99M }).ConfigureAwait(false);
+            //await AddUpdateEntity(new Order { OrderId = 1, OrderDate = DateTime.Now, OrderProducts = { new OrderProduct { ProductId = 100, OrderQuantity = 5, UnitPrice = 99.99M } } }).ConfigureAwait(false);
+            //await AddUpdateEntity(new Order { OrderId = 2, OrderDate = DateTime.Now, OrderProducts = { new OrderProduct { ProductId = 2, OrderQuantity = 3, UnitPrice = 15.99M } } }).ConfigureAwait(false);
+        }
+        static async Task DeleteAllDataAsync(IEventService eventService, IUserTypeService userTypeService) {
+            var events = await eventService.GetAllEventsAsync().ConfigureAwait(false);
+            foreach (var e in events) {
+                await eventService.DeleteEventAsync(e.EventResourceId).ConfigureAwait(false);
+            }
+            //var orders =( await userTypeService.GetOrdersAsync().ConfigureAwait(false)).ToList();
+            //orders.ForEach(async o => await orderService.RemoveOrderAsync(o).ConfigureAwait(false));
+        }
+        async Task ViewallDataAsync() {
+            var events = await eventService.GetAllEventsAsync().ConfigureAwait(false);
+            foreach (var e in events) {
+                Console.WriteLine(e.Serialize());
+            } 
+        }
         //static T? GetEntityFromUser<T>() where T : EntityBase {
         //    var json = CLIUtilities.GetStringFromUser($"Enter {typeof(T)} JSON: ");
         //    T? entity = json.Deserialize<T>();
@@ -185,44 +196,21 @@ internal class Program {
         //    products.ForEach(p => Console.WriteLine(p.Serialize()));
         //}
 
-        //async Task ViewallOrders() {
-        //    var orders = await OrderService.GetOrdersAsync().ConfigureAwait(false);
-        //    orders.ForEach(o => Console.WriteLine(o.ToString()));
-        //}
+        async Task AddUpdateDtoAsync<T>(T? dtoUpdate) where T : BaseDto {
 
-        //async Task AddUpdateEntity<T>(T? entityUpdate) where T : EntityBase {
+            if (dtoUpdate == null) {
+                Console.WriteLine("Nothing updated.");
+                return;
+            }
 
-        //    if (entityUpdate == null) {
-        //        Console.WriteLine("Nothing updated.");
-        //        return;
-        //    }
+            //if (!ValidateEntity(entityUpdate)) {
+            //    return;
+            //}
 
-        //    if (!ValidateEntity(entityUpdate)) {
-        //        return;
-        //    }
-
-        //    if (entityUpdate is Product product) {
-        //        if (!await ProductService.ProductExists(product.ProductId)) {
-        //            Console.WriteLine($"Product not found. Adding.");
-        //            await AddEntity(product);
-        //            return;
-        //        }
-        //        Console.WriteLine($"Updating product Id {product.ProductId}");
-        //        await ProductService.UpdateProduct(product).ConfigureAwait(false);
-        //        return;
-        //    }
-        //    if (entityUpdate is Order order) {
-        //        //TODO: edit PS10 instructions to include valid json now that OrderProduct is a thing.
-        //        if (!await OrderService.OrderExists(order.OrderId)) {
-        //            Console.WriteLine($"Order not found. Adding.");
-        //            await AddEntity(order);
-        //            return;
-        //        }
-        //        Console.WriteLine($"Updating order Id {order.OrderId}");
-        //        await OrderService.UpdateOrder(order).ConfigureAwait(false);
-        //        return;
-        //    }
-        //}
+            if (dtoUpdate is EventDto @event) {
+                await eventService.AddUpdateEventAsync(@event);
+            }
+        }
 
     }
 }

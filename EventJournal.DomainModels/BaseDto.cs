@@ -14,16 +14,5 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         internal abstract void CopyUserValues<T>(T source);
-
-    }
-
-    //TODO: is this needed?
-    public static partial class DtoHelpers {
-        public static T UpdateEntity<T>(this T destination, T source) where T : BaseDto {
-            destination.CopyUserValues(source);
-            destination.CreatedDate = source.CreatedDate;
-            destination.UpdatedDate = DateTime.UtcNow;
-            return destination;
-        }
     }
 }

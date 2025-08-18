@@ -6,9 +6,6 @@ namespace EventJournal.DomainDto {
         public Guid DetailResourceId { get { return ResourceId; } set { ResourceId = value; } }
 
         [Required]
-        public virtual required EventDto Event { get; set; }
-
-        [Required]
         public virtual required DetailTypeDto DetailType { get; set; }
 
         [Required]
@@ -17,9 +14,13 @@ namespace EventJournal.DomainDto {
         [MaxLength(512)]
         public string? Notes { get; set; }
 
+        public static DetailDto CreateDefaultDetailDto() {
+            var detailType = DetailTypeDto.CreateDefaultDetailTypeDto();
+            return new DetailDto { DetailResourceId = Guid.NewGuid(), DetailType = detailType, Intensity = IntensityDto.CreateDefaultIntensityDto(detailType.ResourceId), Notes = "Notes\nmore notes" };
+        }
+ 
         internal override void CopyUserValues<T>(T source) {
             var sourceDetail = source as DetailDto ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(DetailDto)}");
-            Event = sourceDetail.Event;
             DetailType = sourceDetail.DetailType;
             Intensity = sourceDetail.Intensity;
             Notes = sourceDetail.Notes;

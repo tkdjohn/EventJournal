@@ -9,10 +9,10 @@ namespace EventJournal.DomainService {
         IDetailTypeRepository detailRepository,
         IEventTypeRepository eventTypeRepository,
         IIntensityRepository intensityRepository,
-        Mapper mapper) : IUserTypeService {
+        IMapper mapper) : IUserTypeService {
 
-        public async Task<IEnumerable<DetailTypeDto>> GetAllDetailTypesAsync() {
-            return mapper.Map<IEnumerable<DetailTypeDto>>(await detailRepository.GetAllAsync().ConfigureAwait(false));
+        public async Task<IList<DetailTypeDto>> GetAllDetailTypesAsync() {
+            return mapper.Map<IList<DetailTypeDto>>(await detailRepository.GetAllAsync().ConfigureAwait(false));
         }
         public async Task<DetailTypeDto?> GetDetailTypeByIdAsync(Guid resourceId) {
             return mapper.Map<DetailTypeDto?>(await detailRepository.GetByResourceIdAsync(resourceId).ConfigureAwait(false));
@@ -28,8 +28,8 @@ namespace EventJournal.DomainService {
             await detailRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<EventTypeDto>> GetAllEventTypesAsync() {
-            return mapper.Map<IEnumerable<EventTypeDto>>(await eventTypeRepository.GetAllAsync().ConfigureAwait(false));
+        public async Task<IList<EventTypeDto>> GetAllEventTypesAsync() {
+            return mapper.Map<IList<EventTypeDto>>(await eventTypeRepository.GetAllAsync().ConfigureAwait(false));
         }
         public async Task<EventTypeDto?> GetEventTypeByIdAsync(Guid resourceId) {
             return mapper.Map<EventTypeDto?>(await eventTypeRepository.GetByResourceIdAsync(resourceId).ConfigureAwait(false));
@@ -45,8 +45,8 @@ namespace EventJournal.DomainService {
             await eventTypeRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<IntensityDto>> GetAllIntensitiesAsync() {
-            return mapper.Map<IEnumerable<IntensityDto>>(await intensityRepository.GetAllAsync().ConfigureAwait(false));
+        public async Task<IList<IntensityDto>> GetAllIntensitiesAsync() {
+            return mapper.Map<IList<IntensityDto>>(await intensityRepository.GetAllAsync().ConfigureAwait(false));
         }
         public async Task<IntensityDto?> GetIntensityByIdAsync(Guid resourceId) {
             return mapper.Map<IntensityDto?>(await intensityRepository.GetByResourceIdAsync(resourceId).ConfigureAwait(false));
