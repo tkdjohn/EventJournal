@@ -32,9 +32,9 @@ namespace EventJournal.Data.Migrations
                 name: "EventTypes",
                 columns: table => new
                 {
-                    EventTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    EventTypeResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -42,16 +42,16 @@ namespace EventJournal.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventTypes", x => x.EventTypeId);
+                    table.PrimaryKey("PK_EventTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Intensities",
                 columns: table => new
                 {
-                    IntensityId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    IntensityResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
@@ -62,7 +62,7 @@ namespace EventJournal.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Intensities", x => x.IntensityId);
+                    table.PrimaryKey("PK_Intensities", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Intensities_DetailTypes_DetailTypeId",
                         column: x => x.DetailTypeId,
@@ -75,10 +75,10 @@ namespace EventJournal.Data.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    EventId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    EventResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TypeEventTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TypeId = table.Column<int>(type: "INTEGER", nullable: false),
                     StartTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EndTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
@@ -87,12 +87,12 @@ namespace EventJournal.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.EventId);
+                    table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_EventTypes_TypeEventTypeId",
-                        column: x => x.TypeEventTypeId,
+                        name: "FK_Events_EventTypes_TypeId",
+                        column: x => x.TypeId,
                         principalTable: "EventTypes",
-                        principalColumn: "EventTypeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -100,9 +100,9 @@ namespace EventJournal.Data.Migrations
                 name: "Details",
                 columns: table => new
                 {
-                    DetailId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DetailResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
                     EventId = table.Column<int>(type: "INTEGER", nullable: false),
                     DetailTypeId = table.Column<int>(type: "INTEGER", nullable: false),
                     IntensityId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -112,7 +112,7 @@ namespace EventJournal.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Details", x => x.DetailId);
+                    table.PrimaryKey("PK_Details", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Details_DetailTypes_DetailTypeId",
                         column: x => x.DetailTypeId,
@@ -123,13 +123,13 @@ namespace EventJournal.Data.Migrations
                         name: "FK_Details_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
-                        principalColumn: "EventId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Details_Intensities_IntensityId",
                         column: x => x.IntensityId,
                         principalTable: "Intensities",
-                        principalColumn: "IntensityId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -149,9 +149,9 @@ namespace EventJournal.Data.Migrations
                 column: "IntensityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_TypeEventTypeId",
+                name: "IX_Events_TypeId",
                 table: "Events",
-                column: "TypeEventTypeId");
+                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Intensities_DetailTypeId",

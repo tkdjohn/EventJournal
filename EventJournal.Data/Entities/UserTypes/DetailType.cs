@@ -14,7 +14,7 @@ namespace EventJournal.Data.Entities.UserTypes {
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        public IEnumerable<Intensity> Intensities { get; set; } = [];
+        public IEnumerable<Intensity> AllowedIntensities { get; set; } = [];
 
         internal override void CopyUserValues<T>(T source) {
             var sourceDetailType = source as DetailType ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(DetailType)}");

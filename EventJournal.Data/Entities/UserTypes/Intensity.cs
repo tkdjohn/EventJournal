@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace EventJournal.Data.Entities.UserTypes {
     public class Intensity : BaseEntity {
         [Key]
-        public int IntensityId { get { return Id; } set { Id = value; } }
+        public new int Id { get { return base.Id; } set { base.Id = value; } }
         [Required]
-        public Guid IntensityResourceId { get { return ResourceId; } set { ResourceId = value; } }
+        public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
 
         [Required, MaxLength(50)]
         public required string Name { get; set; }

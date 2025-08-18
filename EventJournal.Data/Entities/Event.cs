@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace EventJournal.Data.Entities {
     public class Event : BaseEntity {
         [Key]
-        public int EventId { get { return Id; } set { Id = value; } }
+        public new int Id { get { return base.Id; } set { base.Id = value; } }
 
         [Required]
-        public Guid EventResourceId { get { return ResourceId; } set { ResourceId = value; } }
+        public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
 
         [Required]
         public EventType Type { get; set; } = EventType.CreateDefaultEventType();

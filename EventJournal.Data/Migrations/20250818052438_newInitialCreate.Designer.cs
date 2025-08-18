@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventJournal.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250818030132_newInitialCreate")]
+    [Migration("20250818052438_newInitialCreate")]
     partial class newInitialCreate
     {
         /// <inheritdoc />
@@ -22,14 +22,11 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.Detail", b =>
                 {
-                    b.Property<int>("DetailId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("DetailResourceId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("DetailTypeId")
@@ -45,10 +42,13 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("DetailId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DetailTypeId");
 
@@ -61,7 +61,7 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.Event", b =>
                 {
-                    b.Property<int>("EventId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -75,21 +75,21 @@ namespace EventJournal.Data.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("EventResourceId")
+                    b.Property<Guid>("ResourceId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TypeEventTypeId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("EventId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("TypeEventTypeId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Events");
                 });
@@ -124,7 +124,7 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.EventType", b =>
                 {
-                    b.Property<int>("EventTypeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -135,24 +135,24 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("EventTypeResourceId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ResourceId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("EventTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("EventTypes");
                 });
 
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.Intensity", b =>
                 {
-                    b.Property<int>("IntensityId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -169,9 +169,6 @@ namespace EventJournal.Data.Migrations
                     b.Property<int>("DetailTypeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("IntensityResourceId")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Level")
                         .HasColumnType("INTEGER");
 
@@ -180,10 +177,13 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("IntensityId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DetailTypeId");
 
@@ -221,7 +221,7 @@ namespace EventJournal.Data.Migrations
                 {
                     b.HasOne("EventJournal.Data.Entities.UserTypes.EventType", "Type")
                         .WithMany()
-                        .HasForeignKey("TypeEventTypeId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -231,7 +231,7 @@ namespace EventJournal.Data.Migrations
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.Intensity", b =>
                 {
                     b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", null)
-                        .WithMany("Intensities")
+                        .WithMany("AllowedIntensities")
                         .HasForeignKey("DetailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -244,7 +244,7 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.DetailType", b =>
                 {
-                    b.Navigation("Intensities");
+                    b.Navigation("AllowedIntensities");
                 });
 #pragma warning restore 612, 618
         }

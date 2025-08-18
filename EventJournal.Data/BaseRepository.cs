@@ -11,7 +11,7 @@ namespace EventJournal.Data {
             return row.Entity;
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync() {
+        public async Task<IList<T>> GetAllAsync() {
             return await table.ToListAsync().ConfigureAwait(false);
         }
 
