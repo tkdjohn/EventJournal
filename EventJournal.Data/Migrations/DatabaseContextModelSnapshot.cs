@@ -15,9 +15,9 @@ namespace EventJournal.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
 
-            modelBuilder.Entity("EventJournal.DomainEntities.Detail", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.Detail", b =>
                 {
                     b.Property<int>("DetailId")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace EventJournal.Data.Migrations
                     b.ToTable("Details");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.Event", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.Event", b =>
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace EventJournal.Data.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.UserTypes.DetailType", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.DetailType", b =>
                 {
                     b.Property<int>("DetailTypeId")
                         .ValueGeneratedOnAdd()
@@ -119,7 +119,7 @@ namespace EventJournal.Data.Migrations
                     b.ToTable("DetailTypes");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.UserTypes.EventType", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.EventType", b =>
                 {
                     b.Property<int>("EventTypeId")
                         .ValueGeneratedOnAdd()
@@ -147,7 +147,7 @@ namespace EventJournal.Data.Migrations
                     b.ToTable("EventTypes");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.UserTypes.Intensity", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.Intensity", b =>
                 {
                     b.Property<int>("IntensityId")
                         .ValueGeneratedOnAdd()
@@ -187,21 +187,21 @@ namespace EventJournal.Data.Migrations
                     b.ToTable("Intensities");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.Detail", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.Detail", b =>
                 {
-                    b.HasOne("EventJournal.DomainEntities.UserTypes.DetailType", "DetailType")
+                    b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", "DetailType")
                         .WithMany()
                         .HasForeignKey("DetailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EventJournal.DomainEntities.Event", "Event")
+                    b.HasOne("EventJournal.Data.Entities.Event", "Event")
                         .WithMany("Details")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EventJournal.DomainEntities.UserTypes.Intensity", "Intensity")
+                    b.HasOne("EventJournal.Data.Entities.UserTypes.Intensity", "Intensity")
                         .WithMany()
                         .HasForeignKey("IntensityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -214,9 +214,9 @@ namespace EventJournal.Data.Migrations
                     b.Navigation("Intensity");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.Event", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.Event", b =>
                 {
-                    b.HasOne("EventJournal.DomainEntities.UserTypes.EventType", "Type")
+                    b.HasOne("EventJournal.Data.Entities.UserTypes.EventType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeEventTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -225,21 +225,21 @@ namespace EventJournal.Data.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.UserTypes.Intensity", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.Intensity", b =>
                 {
-                    b.HasOne("EventJournal.DomainEntities.UserTypes.DetailType", null)
+                    b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", null)
                         .WithMany("Intensities")
                         .HasForeignKey("DetailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.Event", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.Event", b =>
                 {
                     b.Navigation("Details");
                 });
 
-            modelBuilder.Entity("EventJournal.DomainEntities.UserTypes.DetailType", b =>
+            modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.DetailType", b =>
                 {
                     b.Navigation("Intensities");
                 });
