@@ -1,10 +1,13 @@
-﻿namespace EventJournal.DomainDto {
+﻿using System.Text.Json.Serialization;
+
+namespace EventJournal.DomainDto {
     public abstract class BaseDto {
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
         public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
 
+        [JsonIgnore]
         public Guid ResourceId { get; set; }
 
         /// <summary>

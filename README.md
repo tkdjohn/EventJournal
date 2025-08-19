@@ -4,7 +4,19 @@ Collect basic timestamped event data with the intent that the data can be analyz
 
 Originally this was intended to track symptoms and intensity. But evolved into more of an event tracker system.
 The concept of Intensity is still a bit muddy, but the idea is that events of a particular even type can be rated on a user defined scale. For example a headache event can have a pain intensity rating. Where an exercise type event could have a distance or workout intensity.
-
+<!--TOC-->
+  - [Features](#features)
+  - [NOTES](#notes)
+    - [Entities](#entities)
+    - [Intensity Examples](#intensity-examples)
+      - [Pain level could be something like](#pain-level-could-be-something-like)
+      - [Bleeding could be](#bleeding-could-be)
+      - [Exercise Intensity could be](#exercise-intensity-could-be)
+      - [Entity Framework help](#entity-framework-help)
+    - [NEXT STEPS](#next-steps)
+    - [TODO](#todo)
+    - [Future Considerations](#future-considerations)
+<!--/TOC-->
 ## Features
 
 - User definable event types (ex. exercise, meal, headache )
@@ -49,12 +61,16 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 
 
 ### NEXT STEPS
-- add default data from CLI isn't working
-    - looks like you have to add detail type first, then add intensities
-    - then you can add everything else?
+- Add details, detail types, and intensities to the initializer
+- update detail, detail type repositories to return related entities
+    - detail should include detail type and intensity and detailtypes.AllowedIntensities
+    - detail type should include valid intensities
+- test full get event with details
+- test full get detail type with allowed intensities
+- add multiple default detail types to initializer (a la event types)
+- add multiple default intensities to initializer (a la event types)
 ### TODO
 - unit tests for repositories and services. Also base entity code?
-- CLI interface to call service methods
 - Web API to call service methods
 - Add common BootStrap code to be consumed by cli and web api projects
     - remove microsoft.extension.hosting pkg where not needed
