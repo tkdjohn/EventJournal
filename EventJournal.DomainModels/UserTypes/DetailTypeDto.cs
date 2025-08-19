@@ -14,8 +14,12 @@ namespace EventJournal.DomainDto.UserTypes {
         public IEnumerable<IntensityDto> AllowedIntensities { get; set; } = [];
 
         //TODO:  does this belong here??
-        public static DetailTypeDto CreateDefaultDetailTypeDto() {
-            return new DetailTypeDto { DetailTypeResourceId = Guid.NewGuid(), Description = "Description", Name = "Default DTO Type" };
+        public static DetailTypeDto DefaultDetailTypeDto() {
+            return new DetailTypeDto { 
+                DetailTypeResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"), 
+                Description = "Description",
+                Name = "Default DTO Type"
+            };
         }
 
         internal override void CopyUserValues<T>(T source) {

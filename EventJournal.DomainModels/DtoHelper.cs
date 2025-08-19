@@ -1,9 +1,8 @@
 ﻿using EventJournal.DomainDto.UserTypes;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace EventJournal.DomainDto {
-    public static partial class DtoHelpers {
+    public static partial class DtoHelper {
         public static T UpdateEntity<T>(this T destination, T source) where T : BaseDto {
             destination.CopyUserValues(source);
             destination.CreatedDate = source.CreatedDate;

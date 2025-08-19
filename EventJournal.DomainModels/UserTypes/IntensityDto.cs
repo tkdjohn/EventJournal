@@ -21,8 +21,15 @@ namespace EventJournal.DomainDto.UserTypes {
         [Required]
         public required Guid DetailTypeId { get; set; }
         //TODO:  does this belong here??
-        public static IntensityDto CreateDefaultIntensityDto(Guid detailTypeId) {
-            return new IntensityDto { IntensityResourceId = Guid.NewGuid(), DefaultSortType = SortType.Descending, Level = 1, Name = "Default Intensity DTO", Description = "Description", DetailTypeId=detailTypeId };
+        public static IntensityDto DefaultIntensityDto(Guid detailTypeId) {
+            return new IntensityDto {
+                IntensityResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                DefaultSortType = SortType.Descending,
+                Level = 1,
+                Name = "Default Intensity DTO",
+                Description = "Description",
+                DetailTypeId = detailTypeId
+            };
         }
 
         internal override void CopyUserValues<T>(T source) {

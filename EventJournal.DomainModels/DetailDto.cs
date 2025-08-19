@@ -14,9 +14,14 @@ namespace EventJournal.DomainDto {
         [MaxLength(512)]
         public string? Notes { get; set; }
 
-        public static DetailDto CreateDefaultDetailDto() {
-            var detailType = DetailTypeDto.CreateDefaultDetailTypeDto();
-            return new DetailDto { DetailResourceId = Guid.NewGuid(), DetailType = detailType, Intensity = IntensityDto.CreateDefaultIntensityDto(detailType.ResourceId), Notes = "Notes\nmore notes" };
+        public static DetailDto DefaultDetailDto() {
+            var detailType = DetailTypeDto.DefaultDetailTypeDto();
+            return new DetailDto { 
+                DetailResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                DetailType = detailType,
+                Intensity = IntensityDto.DefaultIntensityDto(detailType.ResourceId),
+                Notes = "Notes\nmore notes"
+            };
         }
  
         internal override void CopyUserValues<T>(T source) {

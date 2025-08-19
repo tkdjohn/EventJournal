@@ -10,7 +10,7 @@ namespace EventJournal.Data.Entities {
         public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
 
         [Required]
-        public EventType Type { get; set; } = EventType.CreateDefaultEventType();
+        public required EventType EventType { get; set; }
 
         [Required]
         public DateTime StartTime { get; set; } = DateTime.Now;
@@ -23,7 +23,7 @@ namespace EventJournal.Data.Entities {
 
         internal override void CopyUserValues<T>(T source) {
             var soruceEvent = source as Event ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Event)}");
-            Type = soruceEvent.Type;
+            EventType = soruceEvent.EventType;
             StartTime = soruceEvent.StartTime;
             EndTime = soruceEvent.EndTime;
             Description = soruceEvent.Description;

@@ -10,13 +10,13 @@ namespace EventJournal.Data.Entities {
         public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
 
         [Required]
-        public virtual required Event Event { get; set; }
+        public required Event Event { get; set; }
 
         [Required]
-        public virtual required DetailType DetailType { get; set; }
+        public required DetailType DetailType { get; set; }
 
         [Required]
-        public virtual required Intensity Intensity { get; set; }
+        public required Intensity Intensity { get; set; }
 
         [MaxLength(512)]
         public string? Notes { get; set; }

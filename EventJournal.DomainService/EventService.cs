@@ -20,7 +20,10 @@ namespace EventJournal.DomainService {
         public async Task<EventDto> AddUpdateEventAsync(EventDto dto) {
             ArgumentNullException.ThrowIfNull(dto);
             //TODO: additional validations?
-            return mapper.Map<EventDto>(await eventRepository.AddUpdateAsync(mapper.Map<Event>(dto)).ConfigureAwait(false));
+            var eventEntity = mapper.Map<Event>(dto);
+            eventEntity = await eventRepository.AddUpdateAsync(eventEntity).ConfigureAwait(false);
+            var resultDto = mapper.Map<EventDto>(eventEntity);
+            return resultDto;
         }
         public async Task DeleteEventAsync(Guid resourceId) {
             var entity = await eventRepository.GetByResourceIdAsync(resourceId).ConfigureAwait(false);

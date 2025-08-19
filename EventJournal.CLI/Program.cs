@@ -23,7 +23,7 @@ internal class Program {
             //Console.WriteLine("Type '7' to ");
             //Console.WriteLine("Type '8' to ");
 
-            Console.WriteLine("Type '9' to view all data");
+            Console.WriteLine("Type 'v' to view all data");
             Console.WriteLine("Type 'a' to add some test data.");
             Console.WriteLine("Type 'x' to delete all data.");
             Console.WriteLine("Type 'q' to quit.");
@@ -56,10 +56,11 @@ internal class Program {
                 //    case '7':
                 //        await ViewOrder().ConfigureAwait(false);
                 //        break;
-                case '8':
-
-                    break;
-                case '9':
+                //case '8':
+                //    break;
+                //case '9':
+                //    break;
+                case 'v':
                     await ViewallDataAsync().ConfigureAwait(false);
                     break;
                 case 'a':
@@ -99,7 +100,7 @@ internal class Program {
         }
         async Task AddTestDataAsync(IEventService eventService, IUserTypeService userTypeService) {
             Console.WriteLine("Adding/Resetting test data.");
-            await AddUpdateDtoAsync(EventDto.CreateDefaultEventDto()).ConfigureAwait(false);
+            await AddUpdateDtoAsync(EventDto.DefaultEventDto()).ConfigureAwait(false);
             //await AddUpdateEntity(new Product { ProductId = 2, Name = "Dry Cat Food", Quantity = 0, Price = 15.99M }).ConfigureAwait(false);
             //await AddUpdateEntity(new Product { ProductId = 100, Name = "Designer Leash", Quantity = 1, Price = 99.99M }).ConfigureAwait(false);
             //await AddUpdateEntity(new Order { OrderId = 1, OrderDate = DateTime.Now, OrderProducts = { new OrderProduct { ProductId = 100, OrderQuantity = 5, UnitPrice = 99.99M } } }).ConfigureAwait(false);
