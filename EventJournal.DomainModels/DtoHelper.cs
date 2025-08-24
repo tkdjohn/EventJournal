@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EventJournal.DomainDto {
     public static partial class DtoHelper {
@@ -26,7 +26,11 @@ namespace EventJournal.DomainDto {
 
         //TODO: options should be setup in bootstrap
         public static readonly JsonSerializerOptions DefaultSerializerOptions = new() {
-            WriteIndented = true
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true,
+            //TODO: do we want this?
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new JsonStringEnumConverter() }
         };
 
         public static T? Deserialize<T>(this string json) where T : BaseDto {

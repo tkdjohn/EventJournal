@@ -104,8 +104,9 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IntensitySortType")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("IntensitySortType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Name")
                         .IsRequired()

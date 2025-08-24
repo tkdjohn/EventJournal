@@ -8,7 +8,7 @@ using EventJournal.DomainDto.UserTypes;
 
 namespace EventJournal.DomainService {
     public class EventService(
-        IEventRepository eventRepository, 
+        IEventRepository eventRepository,
         IEventTypeRepository eventTypeRepository,
         IMapper mapper)
     : IEventService {

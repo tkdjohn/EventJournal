@@ -1,5 +1,6 @@
-﻿using EventJournal.Data.Entities.Enumerations;
+﻿using EventJournal.Common.Enumerations;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventJournal.Data.Entities.UserTypes {
     public class DetailType : BaseEntity {
@@ -16,6 +17,7 @@ namespace EventJournal.Data.Entities.UserTypes {
         public string? Description { get; set; }
 
         [Required]
+        [Column(TypeName = "nvarchar(50)")]
         public SortType IntensitySortType { get; set; } = SortType.None;
 
         public ICollection<Intensity> AllowedIntensities { get; set; } = [];

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventJournal.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250824044228_fixDetailTypeIntensityRelationshipAgain")]
-    partial class fixDetailTypeIntensityRelationshipAgain
+    [Migration("20250824150901_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,8 +107,9 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IntensitySortType")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("IntensitySortType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Name")
                         .IsRequired()

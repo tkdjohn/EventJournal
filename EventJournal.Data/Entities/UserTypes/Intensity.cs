@@ -24,7 +24,7 @@ namespace EventJournal.Data.Entities.UserTypes {
             Name = sourceIntensity.Name;
             Level = sourceIntensity.Level;
             Description = sourceIntensity.Description;
-            DetailType.CopyUserValues( sourceIntensity.DetailType);
+            DetailType = sourceIntensity.DetailType;
         }
     }
 

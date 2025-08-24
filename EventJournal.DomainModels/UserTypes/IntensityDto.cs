@@ -1,5 +1,4 @@
-﻿using EventJournal.DomainDto.Enumerations;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EventJournal.DomainDto.UserTypes {
     public class IntensityDto : BaseDto {

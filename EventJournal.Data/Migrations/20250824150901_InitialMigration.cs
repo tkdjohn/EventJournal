@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EventJournal.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrationV5 : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace EventJournal.Data.Migrations
                     ResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    IntensitySortType = table.Column<int>(type: "INTEGER", nullable: false),
+                    IntensitySortType = table.Column<string>(type: "nvarchar(32)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -56,7 +56,7 @@ namespace EventJournal.Data.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    DetailTypeId = table.Column<int>(type: "INTEGER", nullable: true),
+                    DetailTypeId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -67,7 +67,8 @@ namespace EventJournal.Data.Migrations
                         name: "FK_Intensities_DetailTypes_DetailTypeId",
                         column: x => x.DetailTypeId,
                         principalTable: "DetailTypes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

@@ -73,7 +73,6 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 - test full get event with details
 - test full get detail type with allowed intensities
 - add multiple default detail types to initializer (a la event types)
-- fix SortType existing in multiple places AND add a string converter for it.
  
 ### TODO
 - unit tests for repositories and services. Also base entity code?

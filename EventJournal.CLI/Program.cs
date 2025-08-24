@@ -2,6 +2,7 @@
 using EventJournal.CLI;
 using EventJournal.Data;
 using EventJournal.Data.UserTypeRepositories;
+using EventJournal.DomainDto;
 using EventJournal.DomainService;
 using EventJournal.PublicModels;
 using Microsoft.EntityFrameworkCore;
@@ -127,11 +128,7 @@ internal class Program {
 
     //TODO: move to shared utilities class or bootstrapper class and remove this method
     private static JsonSerializerOptions GetSerializerOptions() {
-        return new JsonSerializerOptions {
-            WriteIndented = true,
-            PropertyNameCaseInsensitive = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
+        return DtoHelper.DefaultSerializerOptions;
     }
 
     static async Task ViewallDataAsync(JsonSerializerOptions options, IEventService eventService, IDetailService userTypeService) {

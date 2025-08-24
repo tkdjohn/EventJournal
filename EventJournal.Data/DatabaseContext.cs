@@ -1,6 +1,7 @@
 ﻿using EventJournal.Data.Entities;
 using EventJournal.Data.Entities.UserTypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventJournal.Data {
 
@@ -18,6 +19,19 @@ namespace EventJournal.Data {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {
             // needed to properly inject DBContext at runtime
 
+        }
+
+        //protected override void ConfigureConventions(ModelConfigurationBuilder builder) {
+        //    // Applies conversion to all enumerations
+        //    _ = builder.Properties<Enum>()
+        //        .HaveConversion<EnumToStringConverter<Enum>>()
+        //        .HaveColumnType("nvarchar(50)"); 
+        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder
+                .Entity<DetailType>()
+                .Property(e => e.IntensitySortType)
+                .HasConversion<string>();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) {

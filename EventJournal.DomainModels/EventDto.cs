@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EventJournal.DomainDto {
     public class EventDto : BaseDto {
-        public override Guid ResourceId { get; set; } 
+        public override Guid ResourceId { get; set; }
 
         [Required]
         public required EventTypeDto EventType { get; set; }
@@ -23,7 +23,7 @@ namespace EventJournal.DomainDto {
             StartTime = DateTime.Now,
             Description = "Event History Started",
             EventType = EventTypeDto.DefaultEventTypeDtos.First(),
-            Details = [DetailDto.DefaultDetailDto]
+            //Details = [DetailDto.DefaultDetailDto]
         };
 
         internal override void CopyUserValues<T>(T source) {

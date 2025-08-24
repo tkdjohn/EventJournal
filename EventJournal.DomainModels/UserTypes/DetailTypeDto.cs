@@ -1,4 +1,4 @@
-﻿using EventJournal.DomainDto.Enumerations;
+﻿using EventJournal.Common.Enumerations;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventJournal.DomainDto.UserTypes {
@@ -18,7 +18,7 @@ namespace EventJournal.DomainDto.UserTypes {
         public required SortType IntensitySortType { get; set; } = SortType.Descending;
 
         public static readonly DetailTypeDto DefaultDetailTypeDto = new() {
-            ResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"), 
+            ResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             Description = "This is a generic detail type",
             Name = "Generic Detail Type",
             IntensitySortType = SortType.Descending,
