@@ -8,7 +8,7 @@ namespace EventJournal.DomainDto {
         public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
-        public Guid ResourceId { get; set; }
+        public virtual Guid ResourceId { get; set; }
 
         /// <summary>
         /// This method is predominantly for updating an entity based on the values in another entity.

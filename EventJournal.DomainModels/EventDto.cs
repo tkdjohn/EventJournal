@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EventJournal.DomainDto {
     public class EventDto : BaseDto {
-        public Guid EventResourceId { get { return ResourceId; } set { ResourceId = value; } }
+        public override Guid ResourceId { get; set; } 
 
         [Required]
-        public EventTypeDto EventType { get; set; } = EventTypeDto.DefaultEventTypeDto();
+        public required EventTypeDto EventType { get; set; }
 
         [Required]
         public DateTime StartTime { get; set; } = DateTime.Now;
@@ -18,14 +18,13 @@ namespace EventJournal.DomainDto {
 
         public IEnumerable<DetailDto> Details { get; set; } = [];
 
-        public static EventDto DefaultEventDto() {
-            return new EventDto {
-                EventResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddMinutes(1).AddSeconds(1),
-                Description = "Description"
-            };
-        }
+        public static readonly EventDto DefaultEventDto = new() {
+            ResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            StartTime = DateTime.Now,
+            Description = "Event History Started",
+            EventType = EventTypeDto.DefaultEventTypeDtos.First(),
+            Details = [DetailDto.DefaultDetailDto]
+        };
 
         internal override void CopyUserValues<T>(T source) {
             var soruceEvent = source as EventDto ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(EventDto)}");
@@ -34,6 +33,10 @@ namespace EventJournal.DomainDto {
             EndTime = soruceEvent.EndTime;
             Description = soruceEvent.Description;
             Details = soruceEvent.Details;
+        }
+
+        public override string ToString() {
+            return this.Serialize();
         }
     }
 }

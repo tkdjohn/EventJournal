@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EventJournal.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrationTry3 : Migration
+    public partial class InitialMigrationV5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,17 +15,18 @@ namespace EventJournal.Data.Migrations
                 name: "DetailTypes",
                 columns: table => new
                 {
-                    DetailTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DetailTypeResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ResourceId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    IntensitySortType = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DetailTypes", x => x.DetailTypeId);
+                    table.PrimaryKey("PK_DetailTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,8 +56,7 @@ namespace EventJournal.Data.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    DefaultSortType = table.Column<int>(type: "INTEGER", nullable: false),
-                    DetailTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    DetailTypeId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -67,8 +67,7 @@ namespace EventJournal.Data.Migrations
                         name: "FK_Intensities_DetailTypes_DetailTypeId",
                         column: x => x.DetailTypeId,
                         principalTable: "DetailTypes",
-                        principalColumn: "DetailTypeId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -117,7 +116,7 @@ namespace EventJournal.Data.Migrations
                         name: "FK_Details_DetailTypes_DetailTypeId",
                         column: x => x.DetailTypeId,
                         principalTable: "DetailTypes",
-                        principalColumn: "DetailTypeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Details_Events_EventId",

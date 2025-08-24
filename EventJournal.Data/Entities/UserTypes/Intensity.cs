@@ -1,13 +1,11 @@
-﻿using EventJournal.Data.Entities.Enumerations;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EventJournal.Data.Entities.UserTypes {
     public class Intensity : BaseEntity {
         [Key]
-        public new int Id { get { return base.Id; } set { base.Id = value; } }
+        public override int Id { get; set; }
         [Required]
-        public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
+        public override Guid ResourceId { get; set; }
 
         [Required, MaxLength(50)]
         public required string Name { get; set; }
@@ -19,19 +17,14 @@ namespace EventJournal.Data.Entities.UserTypes {
         public string? Description { get; set; }
 
         [Required]
-        public required SortType DefaultSortType { get; set; }
-
-        [ForeignKey(nameof(DetailTypeId))]
-        [Required]
-        public required int DetailTypeId { get; set; }
+        public required DetailType DetailType { get; set; }
 
         internal override void CopyUserValues<T>(T source) {
             var sourceIntensity = source as Intensity ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Intensity)}");
             Name = sourceIntensity.Name;
             Level = sourceIntensity.Level;
             Description = sourceIntensity.Description;
-            DefaultSortType = sourceIntensity.DefaultSortType;
-            DetailTypeId = sourceIntensity.DetailTypeId;
+            DetailType.CopyUserValues( sourceIntensity.DetailType);
         }
     }
 

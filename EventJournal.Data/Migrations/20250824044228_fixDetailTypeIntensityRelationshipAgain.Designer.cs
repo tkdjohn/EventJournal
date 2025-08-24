@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventJournal.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250819054033_InitialMigrationTry3")]
-    partial class InitialMigrationTry3
+    [Migration("20250824044228_fixDetailTypeIntensityRelationshipAgain")]
+    partial class fixDetailTypeIntensityRelationshipAgain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.DetailType", b =>
                 {
-                    b.Property<int>("DetailTypeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -107,17 +107,20 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("DetailTypeResourceId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("IntensitySortType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("DetailTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("DetailTypes");
                 });
@@ -158,9 +161,6 @@ namespace EventJournal.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("DefaultSortType")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -230,11 +230,13 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.Intensity", b =>
                 {
-                    b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", null)
+                    b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", "DetailType")
                         .WithMany("AllowedIntensities")
                         .HasForeignKey("DetailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DetailType");
                 });
 
             modelBuilder.Entity("EventJournal.Data.Entities.Event", b =>

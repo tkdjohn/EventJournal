@@ -7,7 +7,6 @@ namespace EventJournal.Data {
         internal readonly DbSet<T> table = table;
         internal virtual async Task<T> AddAsync(T entity) {
             var row = await table.AddAsync(entity).ConfigureAwait(false);
-            await db.SaveChangesAsync().ConfigureAwait(false);
             return row.Entity;
         }
 
@@ -22,24 +21,34 @@ namespace EventJournal.Data {
         public virtual Task<T?> GetByResourceIdAsync(Guid resourceId) {
             return table.FirstOrDefaultAsync(t => t.ResourceId == resourceId);
         }
-                
-        public virtual Task DeleteAsync(T entity) {
+
+        public virtual void Delete(T entity) {
             table.Remove(entity);
-            return db.SaveChangesAsync();
         }
 
         public virtual async Task<T> AddUpdateAsync(T source) {
             ArgumentException.ThrowIfNullOrEmpty(nameof(source));
-            var existingEntity = await GetByIdAsync(source.Id)
-                ?? await GetByResourceIdAsync(source.ResourceId).ConfigureAwait(false);
-            if (existingEntity == null) {
-                return await AddAsync(source).ConfigureAwait(false);
+            var entity = await GetByIdAsync(source.Id) ?? await GetByResourceIdAsync(source.ResourceId).ConfigureAwait(false);
+            if (entity == null) {
+                entity = await AddAsync(source).ConfigureAwait(false);
+            } else {
+                entity.UpdateEntity(source);
             }
+            return entity;
+        }
 
-            existingEntity.UpdateEntity(source);
+        public virtual async Task<IEnumerable<T>> AddUpdateAsync(IEnumerable<T> sources) {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(sources));
+            var result = new List<T>();
+            foreach (var source in sources) {
+                var updatedEntity = await AddUpdateAsync(source).ConfigureAwait(false);
+                result.Add(updatedEntity);
+            }
+            return result;
+        }
 
-            await db.SaveChangesAsync().ConfigureAwait(false);
-            return existingEntity;
+        public Task SaveChangesAsync() {
+            return db.SaveChangesAsync();
         }
     }
 }

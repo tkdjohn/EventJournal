@@ -28,5 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\EventJournal.Data\EventJournal.Data.csproj" />
     <ProjectReference Include="..\EventJournal.DomainService\EventJournal.DomainService.csproj" />
+    <ProjectReference Include="..\EventJournal.Models\EventJournal.PublicModels.csproj" />
   </ItemGroup>
 </Project>

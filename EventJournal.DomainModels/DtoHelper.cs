@@ -1,42 +1,38 @@
-﻿using EventJournal.DomainDto.UserTypes;
+﻿using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace EventJournal.DomainDto {
     public static partial class DtoHelper {
-        public static T UpdateEntity<T>(this T destination, T source) where T : BaseDto {
+        //TODO: consider using AutoMapper for this if it is even needed
+        public static T UpdateDTO<T>(this T destination, T source) where T : BaseDto {
+            ArgumentNullException.ThrowIfNull(destination);
+            ArgumentNullException.ThrowIfNull(source);
+            if (destination.ResourceId != source.ResourceId)
+                //TODO: custom exception that supports a ThrowIf parameter?
+                throw new InvalidOperationException("ResourceIds do not match");
             destination.CopyUserValues(source);
             destination.CreatedDate = source.CreatedDate;
             destination.UpdatedDate = DateTime.UtcNow;
             return destination;
         }
 
-        public static string Serialize<T>(this T entity) where T : BaseDto {
-            //TODO: use reflection to find objects that inherit from BaseDto and their type 
-            if (entity is DetailDto detail && detail != null) {
-                return JsonSerializer.Serialize(detail);
-            }
-            if (entity is EventDto @event && @event != null) {
-                return JsonSerializer.Serialize(@event);
-            }
-            if (entity is DetailTypeDto detailType && detailType != null) {
-                return JsonSerializer.Serialize(detailType);
-            }
-            if (entity is EventTypeDto eventTypeDto && eventTypeDto != null) {
-                return JsonSerializer.Serialize(eventTypeDto);
-            }
-            if (entity is IntensityDto intensityDto && intensityDto != null) {
-                return JsonSerializer.Serialize(intensityDto);
-            }
-            return JsonSerializer.Serialize(entity);
+        public static string Serialize<T>(this T entity, JsonSerializerOptions? serializerOptions = null) where T : BaseDto {
+            return JsonSerializer.Serialize(entity, entity.GetType(), serializerOptions ?? DefaultSerializerOptions);
         }
+
+        public static string Serialize<T>(this IEnumerable<T> list, JsonSerializerOptions? serializerOptions = null) where T : BaseDto {
+            return JsonSerializer.Serialize(list, list.GetType(), serializerOptions ?? DefaultSerializerOptions);
+        }
+
+        //TODO: options should be setup in bootstrap
+        public static readonly JsonSerializerOptions DefaultSerializerOptions = new() {
+            WriteIndented = true
+        };
 
         public static T? Deserialize<T>(this string json) where T : BaseDto {
             //TODO: does this work properly for inherited types?
             return JsonSerializer.Deserialize<T>(json);
         }
 
-        public static string ToString<T>(this T entity) where T : BaseDto {
-            return entity.Serialize();
-        }
     }
 }

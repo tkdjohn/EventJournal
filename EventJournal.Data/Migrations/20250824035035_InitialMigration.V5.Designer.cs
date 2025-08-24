@@ -3,6 +3,7 @@ using System;
 using EventJournal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventJournal.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250824035035_InitialMigration.V5")]
+    partial class InitialMigrationV5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -163,7 +166,7 @@ namespace EventJournal.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DetailTypeId")
+                    b.Property<int?>("DetailTypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Level")
@@ -227,13 +230,9 @@ namespace EventJournal.Data.Migrations
 
             modelBuilder.Entity("EventJournal.Data.Entities.UserTypes.Intensity", b =>
                 {
-                    b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", "DetailType")
+                    b.HasOne("EventJournal.Data.Entities.UserTypes.DetailType", null)
                         .WithMany("AllowedIntensities")
-                        .HasForeignKey("DetailTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DetailType");
+                        .HasForeignKey("DetailTypeId");
                 });
 
             modelBuilder.Entity("EventJournal.Data.Entities.Event", b =>

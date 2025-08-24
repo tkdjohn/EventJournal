@@ -3,10 +3,10 @@
 namespace EventJournal.Data.Entities.UserTypes {
     public class EventType : BaseEntity {
         [Key]
-        public new int Id { get { return base.Id; } set { base.Id = value; } }
+        public override int Id { get; set; }
 
         [Required]
-        public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
+        public override Guid ResourceId { get; set; }
 
         [Required]
         public required string Name { get; set; }

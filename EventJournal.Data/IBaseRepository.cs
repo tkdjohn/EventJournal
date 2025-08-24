@@ -5,6 +5,9 @@ namespace EventJournal.Data {
         Task<IList<T>> GetAllAsync();
         Task<T?> GetByResourceIdAsync(Guid resourceId);
         Task<T> AddUpdateAsync(T source);
-        Task DeleteAsync(T entity);
+        Task<IEnumerable<T>> AddUpdateAsync(IEnumerable<T> sources);
+        void Delete(T entity);
+
+        Task SaveChangesAsync();
     }
 }

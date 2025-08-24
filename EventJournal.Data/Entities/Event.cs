@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace EventJournal.Data.Entities {
     public class Event : BaseEntity {
         [Key]
-        public new int Id { get { return base.Id; } set { base.Id = value; } }
+        public override int Id { get; set; }
 
         [Required]
-        public new Guid ResourceId { get { return base.ResourceId; } set { base.ResourceId = value; } }
+        public override Guid ResourceId { get; set; }
 
         [Required]
         public required EventType EventType { get; set; }
@@ -19,11 +19,11 @@ namespace EventJournal.Data.Entities {
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        public IEnumerable<Detail> Details { get; set; } = [];
+        public ICollection<Detail> Details { get; set; } = [];
 
         internal override void CopyUserValues<T>(T source) {
             var soruceEvent = source as Event ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Event)}");
-            EventType = soruceEvent.EventType;
+            EventType.UpdateEntity(soruceEvent.EventType);
             StartTime = soruceEvent.StartTime;
             EndTime = soruceEvent.EndTime;
             Description = soruceEvent.Description;

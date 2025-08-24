@@ -61,14 +61,20 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 
 
 ### NEXT STEPS
-- Add details, detail types, and intensities to the initializer
-- update detail, detail type repositories to return related entities
-    - detail should include detail type and intensity and detailtypes.AllowedIntensities
-    - detail type should include valid intensities
+
+- Fix repository structure 
+    - move details back to event service/repo and rename detail service to types service and move event types there
+        - we need a separate types service because types can be added/removed independently of events
+    - remove detail repository and intensity repository   
+    - only add/delete or even GET intensities via methods on detail type
+    - likewise only add/delete or even GET details via methods on event 
+- fix default data (move from DTOs to repository so that individual entities are not duplicated when added via parents)
+    - eg you don't get duplicate event type entity when event is saved - in other words the event type added when event is added isn't a duplicate
 - test full get event with details
 - test full get detail type with allowed intensities
 - add multiple default detail types to initializer (a la event types)
-- add multiple default intensities to initializer (a la event types)
+- fix SortType existing in multiple places AND add a string converter for it.
+ 
 ### TODO
 - unit tests for repositories and services. Also base entity code?
 - Web API to call service methods

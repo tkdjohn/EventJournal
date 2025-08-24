@@ -14,6 +14,7 @@ namespace EventJournal.Data {
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+
         public override Task<Event?> GetByResourceIdAsync(Guid resourceId) {
             return table
                 .Include(e => e.EventType)
@@ -21,8 +22,7 @@ namespace EventJournal.Data {
                     .ThenInclude(d => d.DetailType)
                 .Include(e => e.Details)
                     .ThenInclude(d => d.Intensity)
-                .FirstOrDefaultAsync(e => e.ResourceId == resourceId)
-;
+                .FirstOrDefaultAsync(e => e.ResourceId == resourceId);
         }
     }
 }

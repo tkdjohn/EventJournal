@@ -2,6 +2,10 @@
 using System.Runtime.CompilerServices;
 
 namespace EventJournal.DomainService.Exceptions {
+    //TODO: add logging?
+    //TODO: consider making this a generic NotFoundException that takes the type that was not found?
+    //TODO: [Serializable] ?
+    //TODO: is this needed?
     public class ResourceNotFoundException : Exception {
         public ResourceNotFoundException() { }
 
