@@ -27,7 +27,7 @@ namespace EventJournal.Data {
         }
 
         public virtual async Task<T> AddUpdateAsync(T source) {
-            ArgumentException.ThrowIfNullOrEmpty(nameof(source));
+            ArgumentNullException.ThrowIfNull(source, nameof(source));
             var entity = await GetByIdAsync(source.Id) ?? await GetByResourceIdAsync(source.ResourceId).ConfigureAwait(false);
             if (entity == null) {
                 entity = await AddAsync(source).ConfigureAwait(false);
@@ -38,7 +38,7 @@ namespace EventJournal.Data {
         }
 
         public virtual async Task<IEnumerable<T>> AddUpdateAsync(IEnumerable<T> sources) {
-            ArgumentException.ThrowIfNullOrEmpty(nameof(sources));
+            ArgumentNullException.ThrowIfNull(sources, nameof(sources));
             var result = new List<T>();
             foreach (var source in sources) {
                 var updatedEntity = await AddUpdateAsync(source).ConfigureAwait(false);

@@ -9,6 +9,7 @@ namespace EventJournal.DomainService {
         public DomainMapperProfile() {
 
             //TODO: use reflection to find objects that inherit from BaseDto and map them
+            //TODO: also move to bootstrapper
             CreateMap<Intensity, IntensityDto>().ReverseMap();
             CreateMap<DetailType, DetailTypeDto>().ReverseMap();
             CreateMap<Detail, DetailDto>().ReverseMap();

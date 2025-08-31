@@ -1,5 +1,5 @@
-﻿using EventJournal.DomainDto;
-using EventJournal.DomainDto.UserTypes;
+﻿using EventJournal.Data.Entities;
+using EventJournal.DomainDto;
 
 namespace EventJournal.DomainService {
     public interface IEventService {
@@ -10,13 +10,10 @@ namespace EventJournal.DomainService {
         Task<IEnumerable<EventDto>> AddUpdateEventsAsync(IEnumerable<EventDto> dtos);
         Task DeleteEventAsync(Guid resourceId);
 
-        // ======================> Event Types <======================
-        Task<IList<EventTypeDto>> GetAllEventTypesAsync();
-        Task<EventTypeDto?> GetEventTypeByIdAsync(Guid resourceId);
-        Task<EventTypeDto> AddUpdateEventTypeAsync(EventTypeDto dto);
-        Task<IEnumerable<EventTypeDto>> AddUpdateEventTypesAsync(IEnumerable<EventTypeDto> dtos);
-        Task DeleteEventTypeAsync(Guid resourceId);
-
-        Task AddTestDataAsync();
+        Task AddResetTestDataAsync();
+        Task<Detail> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto);
+        Task AddUpdateDetailsAsync(Guid eventResourceId, IEnumerable<DetailDto> detailDtos);
+        Task RemoveDetailAsync(Guid eventResourceId, Guid detailResourceId);
+        Task RemoveAllDetailsAsync(Guid eventResourceId);
     }
 }

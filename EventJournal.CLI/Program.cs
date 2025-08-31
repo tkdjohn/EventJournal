@@ -14,7 +14,7 @@ internal class Program {
 
         var services = CreateServiceCollection();
         var eventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Product Logic module");
-        var userTypeService = services.GetService<IDetailService>() ?? throw new Exception("Unable to locate a valid Order Logic module");
+        var userTypeService = services.GetService<IUserTypesService>() ?? throw new Exception("Unable to locate a valid Order Logic module");
         bool userIsDone = false;
         while (!userIsDone) {
             //Console.WriteLine("Type '1' to ");
@@ -83,12 +83,11 @@ internal class Program {
             })
             .AddAutoMapper(cfg => { }, typeof(DomainMapperProfile))
             .AddSingleton<IEventRepository, EventRepository>()
-            .AddSingleton<IDetailRepository, DetailRepository>()
             .AddSingleton<IDetailTypeRepository, DetailTypeRepository>()
             .AddSingleton<IEventTypeRepository, EventTypeRepository>()
             .AddSingleton<IIntensityRepository, IntensityRepository>()
             .AddSingleton<IEventService, EventService>()
-            .AddSingleton<IDetailService, DetailService>()
+            .AddSingleton<IUserTypesService, UserTypesService>()
             .AddLogging(options => {
                 options.AddDebug();
                 options.SetMinimumLevel(LogLevel.Error);
@@ -101,23 +100,21 @@ internal class Program {
 
         return servicecollection.BuildServiceProvider();
     }
-    static async Task AddTestDataAsync(IEventService eventService, IDetailService userTypeService) {
+    static async Task AddTestDataAsync(IEventService eventService, IUserTypesService userTypeService) {
         Console.WriteLine("Adding/Resetting test data.");
-        await eventService.AddTestDataAsync().ConfigureAwait(false);
         await userTypeService.AddTestDataAsync().ConfigureAwait(false);
+        await eventService.AddResetTestDataAsync().ConfigureAwait(false);
     }
-    static async Task DeleteAllDataAsync(IEventService eventService, IDetailService userTypeService) {
+    static async Task DeleteAllDataAsync(IEventService eventService, IUserTypesService userTypeService) {
 
         Console.WriteLine("Deleting all data.");
         foreach (var e in await eventService.GetAllEventsAsync().ConfigureAwait(false)) {
             await eventService.DeleteEventAsync(e.ResourceId).ConfigureAwait(false);
         }
-        foreach (var e in await eventService.GetAllEventTypesAsync().ConfigureAwait(false)) {
-            await eventService.DeleteEventTypeAsync(e.ResourceId).ConfigureAwait(false);
+        foreach (var e in await userTypeService.GetAllEventTypesAsync().ConfigureAwait(false)) {
+            await userTypeService.DeleteEventTypeAsync(e.ResourceId).ConfigureAwait(false);
         }
-        foreach (var e in await userTypeService.GetAllDetailsAsync().ConfigureAwait(false)) {
-            await userTypeService.DeleteDetailAsync(e.ResourceId).ConfigureAwait(false);
-        }
+
         foreach (var e in await userTypeService.GetAllIntensitiesAsync().ConfigureAwait(false)) {
             await userTypeService.DeleteIntensityAsync(e.ResourceId).ConfigureAwait(false);
         }
@@ -131,10 +128,10 @@ internal class Program {
         return DtoHelper.DefaultSerializerOptions;
     }
 
-    static async Task ViewallDataAsync(JsonSerializerOptions options, IEventService eventService, IDetailService userTypeService) {
+    static async Task ViewallDataAsync(JsonSerializerOptions options, IEventService eventService, IUserTypesService userTypeService) {
         EventDataResponseModel eventData = new() {
             DetailTypes = await userTypeService.GetAllDetailTypesAsync().ConfigureAwait(false),
-            EventTypes = await eventService.GetAllEventTypesAsync().ConfigureAwait(false),
+            EventTypes = await userTypeService.GetAllEventTypesAsync().ConfigureAwait(false),
             Events = await eventService.GetAllEventsAsync().ConfigureAwait(false)
         };
 

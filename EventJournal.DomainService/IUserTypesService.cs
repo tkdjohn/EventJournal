@@ -2,14 +2,15 @@
 using EventJournal.DomainDto.UserTypes;
 
 namespace EventJournal.DomainService {
-    public interface IDetailService {
+    public interface IUserTypesService {
 
-        // ======================> Details <======================
-        Task<IList<DetailDto>> GetAllDetailsAsync();
-        Task<DetailDto?> GetDetailByIdAsync(Guid resourceId);
-        Task<DetailDto> AddUpdateDetailAsync(DetailDto dto);
-        Task<IEnumerable<DetailDto>> AddUpdateDetailsAsync(IEnumerable<DetailDto> dtos);
-        Task DeleteDetailAsync(Guid resourceId);
+
+        // ======================> Event Types <======================
+        Task<IList<EventTypeDto>> GetAllEventTypesAsync();
+        Task<EventTypeDto?> GetEventTypeByIdAsync(Guid resourceId);
+        Task<EventTypeDto> AddUpdateEventTypeAsync(EventTypeDto dto);
+        Task<IEnumerable<EventTypeDto>> AddUpdateEventTypesAsync(IEnumerable<EventTypeDto> dtos);
+        Task DeleteEventTypeAsync(Guid resourceId);
 
         // ======================> Detail Types <======================
         Task<IList<DetailTypeDto>> GetAllDetailTypesAsync();

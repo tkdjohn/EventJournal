@@ -19,7 +19,38 @@ namespace EventJournal.Data.Entities {
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        public ICollection<Detail> Details { get; set; } = [];
+        public IReadOnlyCollection<Detail> Details=> (IReadOnlyCollection<Detail>)_details;
+        private IList<Detail> _details = [];
+
+        public Detail AddUpdateDetail(Detail detail) {
+            ArgumentNullException.ThrowIfNull(detail, nameof(detail));
+            var existingDetail = _details.FirstOrDefault(d => d.Id == detail.Id || d.ResourceId == detail.ResourceId);
+            if (existingDetail == null) {
+                detail.Event = this;
+                _details.Add(detail);
+                return detail;
+            }
+            existingDetail.Event = this;
+            return existingDetail.UpdateEntity(detail);
+        }
+
+        public void AddUpdateDetails(IEnumerable<Detail> details) {
+            ArgumentNullException.ThrowIfNull(details, nameof(details));
+            foreach (var detail in details) {
+                AddUpdateDetail(detail);
+            }
+        }
+
+        public void RemoveDetail(Guid detailResourceId) {
+            var existingDetail = _details.FirstOrDefault(d => d.ResourceId == detailResourceId);
+            if (existingDetail != null) {
+                _details.Remove(existingDetail);
+            }
+        }
+
+        public void RemoveAllDetails() {
+            _details.Clear();
+        }
 
         internal override void CopyUserValues<T>(T source) {
             var soruceEvent = source as Event ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Event)}");
@@ -27,7 +58,7 @@ namespace EventJournal.Data.Entities {
             StartTime = soruceEvent.StartTime;
             EndTime = soruceEvent.EndTime;
             Description = soruceEvent.Description;
-            Details = soruceEvent.Details;
+            _details = soruceEvent._details;
         }
     }
 }
