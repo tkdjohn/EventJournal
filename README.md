@@ -70,6 +70,8 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
     - ~~likewise only add/delete or even GET details via methods on event~~
 - fix default data (move from DTOs to repository so that individual entities are not duplicated when added via parents)
     - eg you don't get duplicate event type entity when event is saved - in other words the event type added when event is added isn't a duplicate
+    - ~~move default event and default details into event service~~
+    - move all default user type data into user types service (follow event service's example for default data)
 - test full get event with details
 - test full get detail type with allowed intensities
 - add multiple default detail types to initializer (a la event types)
