@@ -9,9 +9,8 @@ namespace EventJournal.DomainService {
         Task<EventDto> AddUpdateEventAsync(EventDto dto);
         Task<IEnumerable<EventDto>> AddUpdateEventsAsync(IEnumerable<EventDto> dtos);
         Task DeleteEventAsync(Guid resourceId);
-
-        Task AddResetTestDataAsync();
-        Task<Detail> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto);
+        
+        Task<DetailDto> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto);
         Task AddUpdateDetailsAsync(Guid eventResourceId, IEnumerable<DetailDto> detailDtos);
         Task RemoveDetailAsync(Guid eventResourceId, Guid detailResourceId);
         Task RemoveAllDetailsAsync(Guid eventResourceId);

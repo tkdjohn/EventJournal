@@ -24,6 +24,8 @@ namespace EventJournal.DomainDto {
             StartTime = soruceEvent.StartTime;
             EndTime = soruceEvent.EndTime;
             Description = soruceEvent.Description;
+            //TODO: this might need to be a deep copy depending on usage
+            // or might need to copy by value instead of reference (eg. call inteisity.copyvaules for each item)
             Details = soruceEvent.Details;
         }
 

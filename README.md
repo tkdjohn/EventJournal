@@ -62,16 +62,11 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 
 ### NEXT STEPS
 
-- Fix repository structure 
-    - ~~move details back to event service/repo and rename detail service to types service and move event types there~~
-        - ~~we need a separate types service because types can be added/removed independently of events~~
-    - ~~remove detail repository~~ and intensity repository   
-    - only add/delete or even GET intensities via methods on detail type
-    - ~~likewise only add/delete or even GET details via methods on event~~
 - fix default data (move from DTOs to repository so that individual entities are not duplicated when added via parents)
     - eg you don't get duplicate event type entity when event is saved - in other words the event type added when event is added isn't a duplicate
+        - this is still an issue!
     - ~~move default event and default details into event service~~
-    - move all default user type data into user types service (follow event service's example for default data)
+    - ~~move all default user type data into user types service (follow event service's example for default data)~~
 - test full get event with details
 - test full get detail type with allowed intensities
 - add multiple default detail types to initializer (a la event types)

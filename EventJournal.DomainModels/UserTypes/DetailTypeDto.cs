@@ -17,14 +17,6 @@ namespace EventJournal.DomainDto.UserTypes {
         [Required]
         public required SortType IntensitySortType { get; set; } = SortType.Descending;
 
-        public static readonly DetailTypeDto DefaultDetailTypeDto = new() {
-            ResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            Description = "This is a generic detail type",
-            Name = "Generic Detail Type",
-            IntensitySortType = SortType.Descending,
-            AllowedIntensities = IntensityDto.DefaultIntensityDtos
-        };
-
         internal override void CopyUserValues<T>(T source) {
             var sourceDetailType = source as DetailTypeDto ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(DetailTypeDto)}");
             Name = sourceDetailType.Name;
@@ -34,6 +26,7 @@ namespace EventJournal.DomainDto.UserTypes {
             // or might need to copy by value instead of reference (eg. call inteisity.copyvaules for each item)
             AllowedIntensities = sourceDetailType.AllowedIntensities;
         }
+
         public override string ToString() {
             return this.Serialize();
         }

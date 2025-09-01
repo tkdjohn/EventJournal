@@ -13,8 +13,9 @@ internal class Program {
     private static async Task Main(string[] args) {
 
         var services = CreateServiceCollection();
-        var eventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Product Logic module");
-        var userTypeService = services.GetService<IUserTypesService>() ?? throw new Exception("Unable to locate a valid Order Logic module");
+        var eventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Event Service");
+        var userTypeService = services.GetService<IUserTypesService>() ?? throw new Exception("Unable to locate a valid User Types Service");
+        var defaultDataProvider = services.GetService<IDefaultDataProvider>() ?? throw new Exception("Unable to locate a valid Default Data Provider");
         bool userIsDone = false;
         while (!userIsDone) {
             //Console.WriteLine("Type '1' to ");
@@ -66,7 +67,7 @@ internal class Program {
                     await ViewallDataAsync(GetSerializerOptions(), eventService, userTypeService).ConfigureAwait(false);
                     break;
                 case 'a':
-                    await AddTestDataAsync(eventService, userTypeService).ConfigureAwait(false);
+                    await AddTestDataAsync(defaultDataProvider).ConfigureAwait(false);
                     break;
                 case 'x':
                     await DeleteAllDataAsync(eventService, userTypeService).ConfigureAwait(false);
@@ -85,9 +86,9 @@ internal class Program {
             .AddSingleton<IEventRepository, EventRepository>()
             .AddSingleton<IDetailTypeRepository, DetailTypeRepository>()
             .AddSingleton<IEventTypeRepository, EventTypeRepository>()
-            .AddSingleton<IIntensityRepository, IntensityRepository>()
             .AddSingleton<IEventService, EventService>()
             .AddSingleton<IUserTypesService, UserTypesService>()
+            .AddSingleton<IDefaultDataProvider, DefaultDataProvider>()
             .AddLogging(options => {
                 options.AddDebug();
                 options.SetMinimumLevel(LogLevel.Error);
@@ -100,10 +101,9 @@ internal class Program {
 
         return servicecollection.BuildServiceProvider();
     }
-    static async Task AddTestDataAsync(IEventService eventService, IUserTypesService userTypeService) {
+    static Task AddTestDataAsync(IDefaultDataProvider defaultDataProvider) {
         Console.WriteLine("Adding/Resetting test data.");
-        await userTypeService.AddTestDataAsync().ConfigureAwait(false);
-        await eventService.AddResetTestDataAsync().ConfigureAwait(false);
+        return defaultDataProvider.AddResetDefaultDataAsync();
     }
     static async Task DeleteAllDataAsync(IEventService eventService, IUserTypesService userTypeService) {
 
@@ -113,10 +113,6 @@ internal class Program {
         }
         foreach (var e in await userTypeService.GetAllEventTypesAsync().ConfigureAwait(false)) {
             await userTypeService.DeleteEventTypeAsync(e.ResourceId).ConfigureAwait(false);
-        }
-
-        foreach (var e in await userTypeService.GetAllIntensitiesAsync().ConfigureAwait(false)) {
-            await userTypeService.DeleteIntensityAsync(e.ResourceId).ConfigureAwait(false);
         }
         foreach (var e in await userTypeService.GetAllDetailTypesAsync().ConfigureAwait(false)) {
             await userTypeService.DeleteDetailTypeAsync(e.ResourceId).ConfigureAwait(false);

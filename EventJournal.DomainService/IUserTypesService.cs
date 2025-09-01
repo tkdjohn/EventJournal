@@ -1,5 +1,4 @@
-﻿using EventJournal.DomainDto;
-using EventJournal.DomainDto.UserTypes;
+﻿using EventJournal.DomainDto.UserTypes;
 
 namespace EventJournal.DomainService {
     public interface IUserTypesService {
@@ -18,14 +17,9 @@ namespace EventJournal.DomainService {
         Task<DetailTypeDto> AddUpdateDetailTypeAsync(DetailTypeDto dto);
         Task<IEnumerable<DetailTypeDto>> AddUpdateDetailTypesAsync(IEnumerable<DetailTypeDto> dtos);
         Task DeleteDetailTypeAsync(Guid resourceId);
-
-        //  =======================> Intensities <======================
-        Task<IList<IntensityDto>> GetAllIntensitiesAsync();
-        Task<IntensityDto?> GetIntensityByIdAsync(Guid resourceId);
-        Task<IntensityDto> AddUpdateIntensityAsync(IntensityDto dto);
-        Task<IEnumerable<IntensityDto>> AddUpdateIntensitiesAsync(IEnumerable<IntensityDto> dtos);
-        Task DeleteIntensityAsync(Guid resourceId);
-
-        Task AddTestDataAsync();
+        Task<IntensityDto> AddUpdateAllowedIntensityAsync(Guid detailTypeResourceId, IntensityDto intensityDto);
+        Task AddUpdateAllowedIntensitiesAsync(Guid detailTypeResourceId, IEnumerable<IntensityDto> intensityDtos);
+        Task RemoveAllowedIntensityAsync(Guid detailTypeResourceId, Guid intensityResourceId);
+        Task RemoveAllAllowedIntensitiesAsync(Guid detailTypeResourceId);
     }
 }

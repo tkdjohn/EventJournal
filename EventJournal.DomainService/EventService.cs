@@ -2,12 +2,13 @@
 using EventJournal.Data;
 using EventJournal.Data.Entities;
 using EventJournal.DomainDto;
-using EventJournal.DomainDto.UserTypes;
 using EventJournal.DomainService.Exceptions;
 
 namespace EventJournal.DomainService {
     public class EventService(
         IEventRepository eventRepository,
+        //TODO: fix this services shouldn't call services
+        IUserTypesService userTypesService,
         IMapper mapper)
     : IEventService {
 
@@ -23,11 +24,16 @@ namespace EventJournal.DomainService {
         public async Task<EventDto> AddUpdateEventAsync(EventDto dto) {
             ArgumentNullException.ThrowIfNull(dto);
             //TODO: additional validations?
-            var savedEntity = await AddUpdateEventInternalAsync(mapper.Map<Event>(dto)).ConfigureAwait(false);
+            var savedEntity = await AddUpdateEventPrivateAsync(mapper.Map<Event>(dto)).ConfigureAwait(false);
+            // so the problem is that we need to find existing DetailType with it's existing AllowedIntensities and THEN assign detail to detail
+            // and pick the right intensity. Not sure this should happen here maybe in AddUpdateDetailAsync() ??
+            // - in other wrds extend the logic in AddUpdteEventPrivateAsync to utilize similar logic  that exists in the USErTypesServie for DetailType and Intensities.
+            // /// remember the goal is that Detail selects a valid intensity from teh list of allowed intensities specified by detail type.
+            // another stray thought: maybe we need a mapping table that maps Detail id and Intensity id?
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
             return mapper.Map<EventDto>(savedEntity);
         }
-        private Task<Event> AddUpdateEventInternalAsync(Event entity) {
+        private Task<Event> AddUpdateEventPrivateAsync(Event entity) {
             // don't duplicate details - match on either Id or ResourceId
             foreach (var detail in entity.Details) {
                 detail.Event = entity;
@@ -44,7 +50,7 @@ namespace EventJournal.DomainService {
             ArgumentNullException.ThrowIfNull(dtos);
             var events = new List<Event>();
             foreach (var dto in dtos) {
-                Event @event = await AddUpdateEventInternalAsync(mapper.Map<Event>(dto)).ConfigureAwait(false);
+                Event @event = await AddUpdateEventPrivateAsync(mapper.Map<Event>(dto)).ConfigureAwait(false);
                 events.Add(@event);
             }
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
@@ -61,12 +67,12 @@ namespace EventJournal.DomainService {
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<Detail> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto) {
+        public async Task<DetailDto> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto) {
             ArgumentNullException.ThrowIfNull(detailDto);
             var eventEntity = await eventRepository.GetByResourceIdAsync(eventResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"Event with ResourceId {eventResourceId} not found.");
             var result = eventEntity.AddUpdateDetail(mapper.Map<Detail>(detailDto));
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
-            return result;
+            return mapper.Map<DetailDto>(result);
         }
 
         public async Task AddUpdateDetailsAsync(Guid eventResourceId, IEnumerable<DetailDto> detailDtos) {
@@ -86,26 +92,6 @@ namespace EventJournal.DomainService {
             var eventEntity = await eventRepository.GetByResourceIdAsync(eventResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"Event with ResourceId {eventResourceId} not found.");
             eventEntity.RemoveAllDetails();
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
-        }
-
-
-        public static readonly Guid DefaultEventResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001");
-        public static readonly Guid DefaultDetailResourceId = Guid.Parse("00000000-0000-0000-0000-000000000001");
-        public Task AddResetTestDataAsync() {
-            
-            return AddUpdateEventAsync(new EventDto {
-                ResourceId = DefaultEventResourceId,
-                StartTime = DateTime.Now,
-                Description = "Event History Started",
-                EventType = EventTypeDto.DefaultEventTypeDtos.First(),
-                Details = [ new DetailDto {
-                    ResourceId = DefaultDetailResourceId,
-                    DetailType = DetailTypeDto.DefaultDetailTypeDto,
-                    Intensity = DetailTypeDto.DefaultDetailTypeDto.AllowedIntensities.First(),
-                    Notes = "Congratulations on starting your Event History!\nTake the next step and add another event!"
-                }
-                    ]
-            });
         }
     }
 }

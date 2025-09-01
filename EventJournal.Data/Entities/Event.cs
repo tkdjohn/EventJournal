@@ -19,19 +19,20 @@ namespace EventJournal.Data.Entities {
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        public IReadOnlyCollection<Detail> Details=> (IReadOnlyCollection<Detail>)_details;
+        public IReadOnlyCollection<Detail> Details => (IReadOnlyCollection<Detail>)_details;
         private IList<Detail> _details = [];
 
         public Detail AddUpdateDetail(Detail detail) {
             ArgumentNullException.ThrowIfNull(detail, nameof(detail));
             var existingDetail = _details.FirstOrDefault(d => d.Id == detail.Id || d.ResourceId == detail.ResourceId);
-            if (existingDetail == null) {
-                detail.Event = this;
-                _details.Add(detail);
-                return detail;
+            if (existingDetail != null) {
+                //TODO: shouldn't this already be the case?
+                existingDetail.Event = this;
+                return existingDetail.UpdateEntity(detail);
             }
-            existingDetail.Event = this;
-            return existingDetail.UpdateEntity(detail);
+            detail.Event = this;
+            _details.Add(detail);
+            return detail;
         }
 
         public void AddUpdateDetails(IEnumerable<Detail> details) {
