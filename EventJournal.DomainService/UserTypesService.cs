@@ -9,7 +9,7 @@ namespace EventJournal.DomainService {
         IEventTypeRepository eventTypeRepository,
         IDetailTypeRepository detailTypeRepository,
         IMapper mapper)
-    : IUserTypesService {
+    : IUserTypesService, IInternalUserTypeService {
 
 
         // ======================> Event Types <======================
@@ -51,6 +51,9 @@ namespace EventJournal.DomainService {
             await eventTypeRepository.SaveChangesAsync().ConfigureAwait(false);
         }
 
+        public Task<EventType?> GetEventTypeEntityAsync(Guid resourceId) {
+            return eventTypeRepository.GetByResourceIdAsync(resourceId);
+        }
         // ======================> Detail Types <======================
         public async Task<IList<DetailTypeDto>> GetAllDetailTypesAsync() {
             return mapper.Map<IList<DetailTypeDto>>(await detailTypeRepository.GetAllAsync().ConfigureAwait(false));
@@ -71,7 +74,7 @@ namespace EventJournal.DomainService {
             // don't duplicate intensities - match on either Id or ResourceId
             foreach (var intensity in entity.AllowedIntensities) {
                 intensity.DetailType = entity;
-                var existingIntensity = entity.AllowedIntensities.FirstOrDefault(i => i.Id == intensity.Id || i.ResourceId == intensity.ResourceId);
+                var existingIntensity = entity.AllowedIntensities.First(i => i.ResourceId == intensity.ResourceId || (i.Id != 0 && i.Id == intensity.Id));
                 if (existingIntensity != null) {
                     intensity.Id = existingIntensity.Id;
                     intensity.ResourceId = existingIntensity.ResourceId;
@@ -120,6 +123,10 @@ namespace EventJournal.DomainService {
             var detailTypeEntity = await detailTypeRepository.GetByResourceIdAsync(detailTypeResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"DetailType with ResourceId {detailTypeResourceId} not found.");
             detailTypeEntity.RemoveAllIntensities();
             await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public Task<DetailType?> GetDetailTypeEntityAsync(Guid resourceId) {
+            return detailTypeRepository.GetByResourceIdAsync(resourceId);
         }
     }
 }
