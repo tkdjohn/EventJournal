@@ -14,8 +14,8 @@ The concept of Intensity is still a bit muddy, but the idea is that events of a 
       - [Exercise Intensity could be](#exercise-intensity-could-be)
       - [Entity Framework help](#entity-framework-help)
     - [NEXT STEPS](#next-steps)
-    - [TODO](#todo)
-    - [Future Considerations](#future-considerations)
+    - [re not n](#re-not-n)
+    - [an id) and have journal e](#an-id-and-have-journal-e)
 <!--/TOC-->
 ## Features
 
@@ -61,22 +61,45 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 
 
 ### NEXT STEPS
+- add bootstrapper to setup 
+    - setup dependency injection
+    - default data seeding (mvoe default data provider to bootstrapper?)
+    - move test data from defaultdataprovider to be inserted from UI
+    - (use this as an opportunity to add add methods to cli)
+- still need to test adding event with details at the same time
+- unit tests for 
+    - repositories 
+    - entity methods
+    - entity validators (if added)
+    - services
+    - mappers?
+    - dto helpers?
+    - bootstrapper
+    - other helpers/extensions?
+    - ?? web api controllers
 
-- fix default data (move from DTOs to repository so that individual entities are not duplicated when added via parents)
-    - eg you don't get duplicate event type entity when event is saved - in other words the event type added when event is added isn't a duplicate
-        - this is still an issue!
-    - ~~move default event and default details into event service~~
-    - ~~move all default user type data into user types service (follow event service's example for default data)~~
 - test full get event with details
 - test full get detail type with allowed intensities
-- add multiple default detail types to initializer (a la event types)
+- add endpoints for:
+    - get all event types
+    - get all detail types with allowed intensities
+    - get all events (with details)
+    - get event by resource id (with details)
+    - get event type by resource id
+    - get detail type by resource id (with allowed intensities)
+    - add event type
+    - add detail type (with allowed intensities)
+    - add event (with details)
+    - update event type
+    - update detail type (with allowed intensities)
+    - update event (with details)
  
 ### TODO
-- unit tests for repositories and services. Also base entity code?
-- Web API to call service methods
+- Replace autoMapper with manual mapping
+- add swagger to web api project
 - Add common BootStrap code to be consumed by cli and web api projects
     - remove microsoft.extension.hosting pkg where not needed
-- move initializer code to an appropriate place 
+- move initializer code to an appropriate place (still needed?) 
     - want to let user get some defaults to start with 
     - but also wan to use these defaults for testing
 - Entity validators

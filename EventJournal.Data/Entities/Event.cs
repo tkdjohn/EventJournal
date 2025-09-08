@@ -24,7 +24,7 @@ namespace EventJournal.Data.Entities {
 
         public Detail AddUpdateDetail(Detail detail) {
             ArgumentNullException.ThrowIfNull(detail, nameof(detail));
-            var existingDetail = _details.FirstOrDefault(d => d.Id == detail.Id || d.ResourceId == detail.ResourceId);
+            var existingDetail = _details.FirstOrDefault(d =>  d.ResourceId == detail.ResourceId || (d.Id != 0 && d.Id == detail.Id));
             if (existingDetail != null) {
                 //TODO: shouldn't this already be the case?
                 existingDetail.Event = this;
@@ -33,13 +33,6 @@ namespace EventJournal.Data.Entities {
             detail.Event = this;
             _details.Add(detail);
             return detail;
-        }
-
-        public void AddUpdateDetails(IEnumerable<Detail> details) {
-            ArgumentNullException.ThrowIfNull(details, nameof(details));
-            foreach (var detail in details) {
-                AddUpdateDetail(detail);
-            }
         }
 
         public void RemoveDetail(Guid detailResourceId) {
@@ -55,7 +48,7 @@ namespace EventJournal.Data.Entities {
 
         internal override void CopyUserValues<T>(T source) {
             var soruceEvent = source as Event ?? throw new InvalidCastException($"{nameof(source)} is not of type {typeof(Event)}");
-            EventType.UpdateEntity(soruceEvent.EventType);
+            EventType = soruceEvent.EventType;
             StartTime = soruceEvent.StartTime;
             EndTime = soruceEvent.EndTime;
             Description = soruceEvent.Description;

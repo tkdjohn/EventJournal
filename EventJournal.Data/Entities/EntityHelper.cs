@@ -5,7 +5,7 @@
             ArgumentNullException.ThrowIfNull(source);
             if (destination.ResourceId != source.ResourceId)
                 //TODO: custom exception that supports a ThrowIf parameter?
-                throw new InvalidOperationException("ResourceIds do not match");
+                throw new InvalidOperationException($"{typeof(T).Name} ResourceIds do not match");
             destination.CopyUserValues(source);
             destination.UpdatedDate = DateTime.UtcNow;
             return destination;

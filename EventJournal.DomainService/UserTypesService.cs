@@ -84,7 +84,10 @@ namespace EventJournal.DomainService {
         }
         public async Task<IEnumerable<DetailTypeDto>> AddUpdateDetailTypesAsync(IEnumerable<DetailTypeDto> dtos) {
             ArgumentNullException.ThrowIfNull(dtos);
-            var detailTypeEntities = await AddUpdateDetailTypePrivateAsync(mapper.Map<DetailType>(dtos)).ConfigureAwait(false);
+            List<DetailType> detailTypeEntities = [];
+            foreach (var dto in dtos) {
+                detailTypeEntities.Add( await AddUpdateDetailTypePrivateAsync(mapper.Map<DetailType>(dto)).ConfigureAwait(false));
+            }
             await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
             return mapper.Map<List<DetailTypeDto>>(detailTypeEntities);
         }
@@ -100,16 +103,20 @@ namespace EventJournal.DomainService {
 
         public async Task<IntensityDto> AddUpdateAllowedIntensityAsync(Guid detailTypeResourceId, IntensityDto intensityDto) {
             ArgumentNullException.ThrowIfNull(intensityDto);
-            var detailTypeEntity = await detailTypeRepository.GetByResourceIdAsync(detailTypeResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"DetailType with ResourceId {detailTypeResourceId} not found.");
-            var result = detailTypeEntity.AddUpdateAllowedIntensity(mapper.Map<Intensity>(intensityDto));
+            var result = AddUpdateAllowedIntensityPrivateAsync(detailTypeResourceId, mapper.Map<Intensity>(intensityDto));
             await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
             return mapper.Map<IntensityDto>(result);
         }
-
-        public async Task AddUpdateAllowedIntensitiesAsync(Guid detailTypeResourceId, IEnumerable<IntensityDto> intensityDtos) {
-            ArgumentNullException.ThrowIfNull(intensityDtos);
+        private async Task<Intensity> AddUpdateAllowedIntensityPrivateAsync(Guid detailTypeResourceId, Intensity intensity) {
             var detailTypeEntity = await detailTypeRepository.GetByResourceIdAsync(detailTypeResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"DetailType with ResourceId {detailTypeResourceId} not found.");
-            detailTypeEntity.AddUpdateAllowedIntensities(mapper.Map<IEnumerable<Intensity>>(intensityDtos));
+            var result = detailTypeEntity.AddUpdateAllowedIntensity(intensity);
+            await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
+            return result;
+        }
+        public async Task AddUpdateAllowedIntensitiesAsync(Guid detailTypeResourceId, IEnumerable<IntensityDto> intensityDtos) {
+            foreach (var intensityDto in intensityDtos) {
+                await AddUpdateAllowedIntensityPrivateAsync(detailTypeResourceId, mapper.Map<Intensity>(intensityDto)).ConfigureAwait(false);
+            }
             await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
         }
 

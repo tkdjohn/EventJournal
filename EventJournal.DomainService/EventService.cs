@@ -39,7 +39,7 @@ namespace EventJournal.DomainService {
             @event.EventType = eventType;
             foreach (var detail in @event.Details) {
                 detail.Event = @event;
-                var existingDetail = @event.Details.First(d =>  d.ResourceId == detail.ResourceId || (d.Id != 0 && d.Id == detail.Id));
+                var existingDetail = @event.Details.First(d => d.ResourceId == detail.ResourceId || (d.Id != 0 && d.Id == detail.Id));
                 if (existingDetail != null) {
                     detail.Id = existingDetail.Id;
                     detail.ResourceId = existingDetail.ResourceId;
@@ -72,32 +72,25 @@ namespace EventJournal.DomainService {
         }
 
         public async Task<DetailDto> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto) {
-
-            // so the problem is that we need to find existing DetailType with it's existing AllowedIntensities and THEN assign detail to detail
-            // and pick the right intensity. Not sure this should happen here maybe in AddUpdateDetailAsync() ??
-            // - in other wrds extend the logic in AddUpdteEventPrivateAsync to utilize similar logic  that exists in the USErTypesServie for DetailType and Intensities.
-            // /// remember the goal is that Detail selects a valid intensity from the list of allowed intensities specified by detail type.
-            // another stray thought: maybe we need a mapping table that maps Detail id and Intensity id?
             ArgumentNullException.ThrowIfNull(detailDto);
-            var eventEntity = await eventRepository.GetByResourceIdAsync(eventResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"Event with ResourceId {eventResourceId} not found.");
-            
-            var detailTypeEntity = await internalUserTypeService.GetDetailTypeEntityAsync(detailDto.DetailType.ResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"DetailType with ResourceId {detailDto.DetailType.ResourceId} not found.");
-            var intensityEntity = detailTypeEntity.AllowedIntensities.FirstOrDefault(i => i.ResourceId == detailDto.Intensity.ResourceId) ?? throw new ResourceNotFoundException($"Intensity with ResourceId {detailDto.Intensity.ResourceId} not found in DetailType with ResourceId {detailDto.DetailType.ResourceId}.");
-            
-            var detailEntity = mapper.Map<Detail>(detailDto);
-            //TODO: move these to mapper when you replace AutoMapper
-            detailEntity.DetailType = detailTypeEntity;
-            detailEntity.Intensity = intensityEntity;
 
-            var result = eventEntity.AddUpdateDetail(detailEntity);
+            var result = AddUpdateDetailPrivateAsync(eventResourceId, mapper.Map<Detail>(detailDto));
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
             return mapper.Map<DetailDto>(result);
         }
-
-        public async Task AddUpdateDetailsAsync(Guid eventResourceId, IEnumerable<DetailDto> detailDtos) {
-            ArgumentNullException.ThrowIfNull(detailDtos);
+        private async Task<Detail> AddUpdateDetailPrivateAsync(Guid eventResourceId, Detail detail) {
+            ArgumentNullException.ThrowIfNull(detail);
             var eventEntity = await eventRepository.GetByResourceIdAsync(eventResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"Event with ResourceId {eventResourceId} not found.");
-            eventEntity.AddUpdateDetails(mapper.Map<IEnumerable<Detail>>(detailDtos));
+            var detailTypeEntity = await internalUserTypeService.GetDetailTypeEntityAsync(detail.DetailType.ResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"DetailType with ResourceId {detail.DetailType.ResourceId} not found.");
+            var intensityEntity = detailTypeEntity.AllowedIntensities.FirstOrDefault(i => i.ResourceId == detail.Intensity.ResourceId) ?? throw new ResourceNotFoundException($"Intensity with ResourceId {detail.Intensity.ResourceId} not found in DetailType with ResourceId {detail.DetailType.ResourceId}.");
+            detail.DetailType = detailTypeEntity;
+            detail.Intensity = intensityEntity;
+            return eventEntity.AddUpdateDetail(detail);
+        }
+        public async Task AddUpdateDetailsAsync(Guid eventResourceId, IEnumerable<DetailDto> detailDtos) {
+            foreach (var detailDto in detailDtos) {
+                await AddUpdateDetailPrivateAsync(eventResourceId, mapper.Map<Detail>(detailDto)).ConfigureAwait(false);
+            }
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
         }
 

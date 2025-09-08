@@ -21,11 +21,11 @@ namespace EventJournal.Data.Entities.UserTypes {
         public SortType IntensitySortType { get; set; } = SortType.None;
 
         public IReadOnlyCollection<Intensity> AllowedIntensities => (IReadOnlyCollection<Intensity>)_intensities;
-        private IList<Intensity> _intensities = [];
+        private readonly IList<Intensity> _intensities = [];
 
         public Intensity AddUpdateAllowedIntensity(Intensity intensity) {
             ArgumentNullException.ThrowIfNull(intensity, nameof(intensity));
-            var existingIntensity = _intensities.FirstOrDefault(i => i.Id == intensity.Id || i.ResourceId == intensity.ResourceId);
+            var existingIntensity = _intensities.FirstOrDefault(i => i.ResourceId == intensity.ResourceId || (i.Id != 0 && i.Id == intensity.Id));
             if (existingIntensity != null) {
                 //TODO: shouldn't this already be the case?
                 existingIntensity.DetailType = this;
@@ -36,15 +36,8 @@ namespace EventJournal.Data.Entities.UserTypes {
             return intensity;
         }
 
-        public void AddUpdateAllowedIntensities(IEnumerable<Intensity> intensities) {
-            ArgumentNullException.ThrowIfNull(intensities, nameof(intensities));
-            foreach (var intensity in intensities) { 
-                AddUpdateAllowedIntensity(intensity); 
-            }
-        }
-
-        public void RemoveIntensity(Guid intensityResoruceId) {
-            var existignIntensity = _intensities.FirstOrDefault(i => i.ResourceId == intensityResoruceId);
+        public void RemoveIntensity(Guid intensityResourceId) {
+            var existignIntensity = _intensities.FirstOrDefault(i => i.ResourceId == intensityResourceId);
             if (existignIntensity != null) {
                 _intensities.Remove(existignIntensity);
             }
