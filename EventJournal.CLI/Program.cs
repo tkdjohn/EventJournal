@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using EventJournal.BootStrap;
 using EventJournal.CLI;
 using EventJournal.Data;
 using EventJournal.Data.UserTypeRepositories;
@@ -6,6 +7,7 @@ using EventJournal.DomainDto;
 using EventJournal.DomainService;
 using EventJournal.PublicModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -27,7 +29,7 @@ internal class Program {
             //Console.WriteLine("Type '8' to ");
 
             Console.WriteLine("Type 'v' to view all data");
-            Console.WriteLine("Type 'a' to add some test data.");
+            Console.WriteLine("Type 't' to add some test data.");
             Console.WriteLine("Type 'x' to delete all data.");
             Console.WriteLine("Type 'q' to quit.");
 
@@ -66,7 +68,7 @@ internal class Program {
                 case 'v':
                     await ViewallDataAsync(GetSerializerOptions(), eventService, userTypeService).ConfigureAwait(false);
                     break;
-                case 'a':
+                case 't':
                     await AddTestDataAsync(defaultDataProvider).ConfigureAwait(false);
                     break;
                 case 'x':
@@ -98,7 +100,11 @@ internal class Program {
                     options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
                 });
             });
-
+        // setup and register boostrapper and it's installers -- needs to be last
+        servicecollection.AddBootStrapper<DefaultApplicationBootStrapper>(Configuration, o => {
+            o.AddInstaller(new DomainServiceInstaller());
+            o.AddInstaller(new IdentityServerInstaller());
+        });
         return servicecollection.BuildServiceProvider();
     }
     static Task AddTestDataAsync(IDefaultDataProvider defaultDataProvider) {

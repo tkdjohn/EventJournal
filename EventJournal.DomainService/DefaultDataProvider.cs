@@ -70,8 +70,6 @@ namespace EventJournal.DomainService {
                         }
                     ]
                 },
-                //TODO: breakfast seems a bit too specific for a default detail type but it's an example of how to use detail types and intensities
-                // Consider changing to something more generic like "Meal" or "Food Intake" and leaving the specifics to the Detail Notes
                 new DetailTypeDto {
                     ResourceId = DefaultDetailTypeResourceIds[2],
                     Description = "Use this detail type to track your breakfast.",

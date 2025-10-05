@@ -5,8 +5,8 @@ namespace EventJournal.DomainDto {
     public static partial class DtoHelper {
         //TODO: consider using AutoMapper for this if it is even needed
         public static T UpdateDTO<T>(this T destination, T source) where T : BaseDto {
-            ArgumentNullException.ThrowIfNull(destination);
-            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(destination, nameof(destination));
+            ArgumentNullException.ThrowIfNull(source, nameof(source));
             if (destination.ResourceId != source.ResourceId)
                 //TODO: custom exception that supports a ThrowIf parameter?
                 throw new InvalidOperationException("ResourceIds do not match");

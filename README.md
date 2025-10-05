@@ -14,8 +14,8 @@ The concept of Intensity is still a bit muddy, but the idea is that events of a 
       - [Exercise Intensity could be](#exercise-intensity-could-be)
       - [Entity Framework help](#entity-framework-help)
     - [NEXT STEPS](#next-steps)
-    - [re not n](#re-not-n)
-    - [an id) and have journal e](#an-id-and-have-journal-e)
+    - [TODO](#todo)
+    - [Future Considerations](#future-considerations)
 <!--/TOC-->
 ## Features
 
@@ -63,9 +63,9 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 ### NEXT STEPS
 - add bootstrapper to setup 
     - setup dependency injection
-    - default data seeding (mvoe default data provider to bootstrapper?)
+    - default data seeding (move default data provider to bootstrapper?)
     - move test data from defaultdataprovider to be inserted from UI
-    - (use this as an opportunity to add add methods to cli)
+    - (use this as an opportunity to add methods to cli)
 - still need to test adding event with details at the same time
 - unit tests for 
     - repositories 

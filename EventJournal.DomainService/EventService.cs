@@ -23,7 +23,7 @@ namespace EventJournal.DomainService {
         }
 
         public async Task<EventDto> AddUpdateEventAsync(EventDto dto) {
-            ArgumentNullException.ThrowIfNull(dto);
+            ArgumentNullException.ThrowIfNull(dto, nameof(dto));
             //TODO: additional validations?
             var eventTypeEntity = await internalUserTypeService.GetEventTypeEntityAsync(dto.EventType.ResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"EventType with ResourceId {dto.EventType.ResourceId} not found.");
 
@@ -34,7 +34,7 @@ namespace EventJournal.DomainService {
         }
 
         private Task<Event> AddUpdateEventPrivateAsync(Event @event, EventType eventType) {
-            ArgumentNullException.ThrowIfNull(eventType);
+            ArgumentNullException.ThrowIfNull(eventType, nameof(eventType));
             // don't duplicate details - match on either Id or ResourceId
             @event.EventType = eventType;
             foreach (var detail in @event.Details) {
@@ -49,7 +49,7 @@ namespace EventJournal.DomainService {
             return eventRepository.AddUpdateAsync(@event);
         }
         public async Task<IEnumerable<EventDto>> AddUpdateEventsAsync(IEnumerable<EventDto> dtos) {
-            ArgumentNullException.ThrowIfNull(dtos);
+            ArgumentNullException.ThrowIfNull(dtos, nameof(dtos));
             var events = new List<Event>();
             foreach (var dto in dtos) {
                 //TODO: additional validations?
@@ -72,14 +72,14 @@ namespace EventJournal.DomainService {
         }
 
         public async Task<DetailDto> AddUpdateDetailAsync(Guid eventResourceId, DetailDto detailDto) {
-            ArgumentNullException.ThrowIfNull(detailDto);
+            ArgumentNullException.ThrowIfNull(detailDto, nameof(detailDto));
 
             var result = AddUpdateDetailPrivateAsync(eventResourceId, mapper.Map<Detail>(detailDto));
             await eventRepository.SaveChangesAsync().ConfigureAwait(false);
             return mapper.Map<DetailDto>(result);
         }
         private async Task<Detail> AddUpdateDetailPrivateAsync(Guid eventResourceId, Detail detail) {
-            ArgumentNullException.ThrowIfNull(detail);
+            ArgumentNullException.ThrowIfNull(detail, nameof(detail));
             var eventEntity = await eventRepository.GetByResourceIdAsync(eventResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"Event with ResourceId {eventResourceId} not found.");
             var detailTypeEntity = await internalUserTypeService.GetDetailTypeEntityAsync(detail.DetailType.ResourceId).ConfigureAwait(false) ?? throw new ResourceNotFoundException($"DetailType with ResourceId {detail.DetailType.ResourceId} not found.");
             var intensityEntity = detailTypeEntity.AllowedIntensities.FirstOrDefault(i => i.ResourceId == detail.Intensity.ResourceId) ?? throw new ResourceNotFoundException($"Intensity with ResourceId {detail.Intensity.ResourceId} not found in DetailType with ResourceId {detail.DetailType.ResourceId}.");

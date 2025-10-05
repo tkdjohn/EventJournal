@@ -22,7 +22,7 @@ namespace EventJournal.DomainService {
         }
 
         public async Task<EventTypeDto> AddUpdateEventTypeAsync(EventTypeDto dto) {
-            ArgumentNullException.ThrowIfNull(dto);
+            ArgumentNullException.ThrowIfNull(dto, nameof(dto));
             //TODO: additional validations?
             var savedEntity = await AddUpdateEventTypePrivateAsync(mapper.Map<EventType>(dto)).ConfigureAwait(false);
             await eventTypeRepository.SaveChangesAsync().ConfigureAwait(false);
@@ -32,7 +32,7 @@ namespace EventJournal.DomainService {
             return eventTypeRepository.AddUpdateAsync(entity);
         }
         public async Task<IEnumerable<EventTypeDto>> AddUpdateEventTypesAsync(IEnumerable<EventTypeDto> dtos) {
-            ArgumentNullException.ThrowIfNull(dtos);
+            ArgumentNullException.ThrowIfNull(dtos, nameof(dtos));
             List<EventType> eventTypes = [];
             foreach (var dto in dtos) {
                 EventType eventType = await AddUpdateEventTypePrivateAsync(mapper.Map<EventType>(dto)).ConfigureAwait(false);
@@ -64,7 +64,7 @@ namespace EventJournal.DomainService {
         }
 
         public async Task<DetailTypeDto> AddUpdateDetailTypeAsync(DetailTypeDto dto) {
-            ArgumentNullException.ThrowIfNull(dto);
+            ArgumentNullException.ThrowIfNull(dto, nameof(dto));
             //TODO: additional validations?
             var entity = await AddUpdateDetailTypePrivateAsync(mapper.Map<DetailType>(dto)).ConfigureAwait(false);
             await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
@@ -83,7 +83,7 @@ namespace EventJournal.DomainService {
             return detailTypeRepository.AddUpdateAsync(entity);
         }
         public async Task<IEnumerable<DetailTypeDto>> AddUpdateDetailTypesAsync(IEnumerable<DetailTypeDto> dtos) {
-            ArgumentNullException.ThrowIfNull(dtos);
+            ArgumentNullException.ThrowIfNull(dtos, nameof(dtos));
             List<DetailType> detailTypeEntities = [];
             foreach (var dto in dtos) {
                 detailTypeEntities.Add( await AddUpdateDetailTypePrivateAsync(mapper.Map<DetailType>(dto)).ConfigureAwait(false));
@@ -102,7 +102,7 @@ namespace EventJournal.DomainService {
         }
 
         public async Task<IntensityDto> AddUpdateAllowedIntensityAsync(Guid detailTypeResourceId, IntensityDto intensityDto) {
-            ArgumentNullException.ThrowIfNull(intensityDto);
+            ArgumentNullException.ThrowIfNull(intensityDto, nameof(intensityDto));
             var result = AddUpdateAllowedIntensityPrivateAsync(detailTypeResourceId, mapper.Map<Intensity>(intensityDto));
             await detailTypeRepository.SaveChangesAsync().ConfigureAwait(false);
             return mapper.Map<IntensityDto>(result);
