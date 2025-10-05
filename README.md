@@ -62,8 +62,20 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 
 ### NEXT STEPS
 - add bootstrapper to setup 
-    - setup dependency injection
-    - default data seeding (move default data provider to bootstrapper?)
+    - configuration for db context
+        - consider in memory and sqlite options
+        - consider add option for sql server (localdb or full)
+        - Add support for design time db context factory
+    - get configuration mapping working (appsettings.json)
+        - might need to add a config class for db settings
+        - might need to add a config class for default data settings
+        - might need to add a config class for logging settings
+        - might need to add a config class for web api settings (cors, etc)
+        - might need to add a config class for cli settings (verbosity, etc)
+        - might need to add nuget reference for Microsoft.Extensions.Configuration.Binder
+    - default data seeding 
+        - add option to supply default data from config
+        - move default data provider to bootstrapper?)
     - move test data from defaultdataprovider to be inserted from UI
     - (use this as an opportunity to add methods to cli)
 - still need to test adding event with details at the same time

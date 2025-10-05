@@ -2,7 +2,7 @@
 
 namespace EventJournal.Common.IOC {
     public static class DI {
-        private static readonly object lockObject = new();
+        private static readonly Lock lockObject = new();
 
         public static void SetContainer(IServiceProvider instance) {
             lock (lockObject) {

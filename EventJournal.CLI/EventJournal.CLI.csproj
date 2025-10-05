@@ -29,4 +29,10 @@
     <ProjectReference Include="..\EventJournal.DomainService\EventJournal.DomainService.csproj" />
     <ProjectReference Include="..\EventJournal.Models\EventJournal.PublicModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

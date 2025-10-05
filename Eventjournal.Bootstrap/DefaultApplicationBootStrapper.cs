@@ -8,6 +8,7 @@ namespace EventJournal.BootStrap {
                 new RepositoryInstaller(),
                 new DomainServiceInstaller(),
                 new DistributedLockInstaller(),
+                new ModelMapperInstaller(),
             ];
         }
     }

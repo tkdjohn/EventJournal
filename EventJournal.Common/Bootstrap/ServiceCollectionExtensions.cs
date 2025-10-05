@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace EventJournal.Common.Bootstrap {
@@ -32,6 +33,24 @@ namespace EventJournal.Common.Bootstrap {
                 .ToList()
                 .ForEach(x => services.AddSingleton(x));
 
+            return services;
+        }
+
+        public static IServiceCollection AddBootStrapper<T>(this IServiceCollection services,
+            IConfiguration configuration, Action<BootStrapperOptions> options) where T : BootStrapper, new() {
+            services.AddSingleton(configuration);
+            var bootstrapper = new T();
+
+            var o = new BootStrapperOptions();
+            options?.Invoke(o);
+
+            foreach (var installer in o.Installers) {
+                bootstrapper.AddInstaller(installer);
+            }
+
+            //TODO: figure out if we need to cast to IConfigurationRoot
+            //bootstrapper.InitIoCContainer(configuration: (configuration as IConfigurationRoot), services);
+            bootstrapper.InitIoCContainer(configuration, services);
             return services;
         }
     }

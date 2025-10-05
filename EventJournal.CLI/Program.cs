@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using EventJournal.BootStrap;
 using EventJournal.CLI;
+using EventJournal.Common.Bootstrap;
 using EventJournal.Data;
 using EventJournal.Data.UserTypeRepositories;
 using EventJournal.DomainDto;
@@ -80,33 +81,35 @@ internal class Program {
     }
     //TODO: move to shared bootsrapper.cs and remove this method and remove microsoft.extension.hosting pkg
     static IServiceProvider CreateServiceCollection() {
+        IConfiguration Configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
         var servicecollection = new ServiceCollection()
-            .AddDbContext<IDatabaseContext, DatabaseContext>(options => {
-                options.UseSqlite($"Data Source={DatabaseContext.GetSqliteDbPath()}");
-            })
-            .AddAutoMapper(cfg => { }, typeof(DomainMapperProfile))
-            .AddSingleton<IEventRepository, EventRepository>()
-            .AddSingleton<IDetailTypeRepository, DetailTypeRepository>()
-            .AddSingleton<IEventTypeRepository, EventTypeRepository>()
-            .AddSingleton<IEventService, EventService>()
-            .AddSingleton<IUserTypesService, UserTypesService>()
-            .AddSingleton<IDefaultDataProvider, DefaultDataProvider>()
-            .AddLogging(options => {
-                options.AddDebug();
-                options.SetMinimumLevel(LogLevel.Error);
-                options.AddSimpleConsole(options => {
-                    options.SingleLine = true;
-                    options.TimestampFormat = "HH:mm:ss.fff ";
-                    options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+                //TOOD: move to bootstrapper and data source should be in appsettings.json
+                .AddDbContext<IDatabaseContext, DatabaseContext>(options => {
+                    options.UseSqlite($"Data Source={DatabaseContext.GetSqliteDbPath()}");
+                })
+                //TODO: most/all of these should in bootstrapper (and may already be there)
+                .AddSingleton<IDefaultDataProvider, DefaultDataProvider>()
+                .AddLogging(options => {
+                    options.AddDebug();
+                    options.SetMinimumLevel(LogLevel.Error);
+                    options.AddSimpleConsole(options => {
+                        options.SingleLine = true;
+                        options.TimestampFormat = "HH:mm:ss.fff ";
+                        options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+                    });
+                })
+                // setup and register boostrapper and it's installers -- needs to be last
+                .AddBootStrapper<DefaultApplicationBootStrapper>(Configuration, o => {
+                    //TOOD: add any application specific installers here if needed
+                    // installers that are common to all applications should go in the DefaultApplicationBootStrapper class
                 });
-            });
-        // setup and register boostrapper and it's installers -- needs to be last
-        servicecollection.AddBootStrapper<DefaultApplicationBootStrapper>(Configuration, o => {
-            o.AddInstaller(new DomainServiceInstaller());
-            o.AddInstaller(new IdentityServerInstaller());
-        });
         return servicecollection.BuildServiceProvider();
     }
+
     static Task AddTestDataAsync(IDefaultDataProvider defaultDataProvider) {
         Console.WriteLine("Adding/Resetting test data.");
         return defaultDataProvider.AddResetDefaultDataAsync();
