@@ -1,7 +1,7 @@
-﻿using EventJournal.Data.Entities;
+﻿using EventJournal.Configuration;
+using EventJournal.Data.Entities;
 using EventJournal.Data.Entities.UserTypes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventJournal.Data {
 
@@ -18,7 +18,6 @@ namespace EventJournal.Data {
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {
             // needed to properly inject DBContext at runtime
-
         }
 
         //protected override void ConfigureConventions(ModelConfigurationBuilder builder) {
@@ -36,16 +35,33 @@ namespace EventJournal.Data {
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) {
             if (!options.IsConfigured) {
-                options.UseSqlite($"Data Source={GetSqliteDbPath()}");
+                options.UseSqlite(GetConnectionString());
             }
         }
 
-        public static string GetSqliteDbPath() {
-            // The following configures EF to create a Sqlite database file in the
-            // special "local" folder for your platform.
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            return Path.Join(path, "EventJournal.db");
+        public static string GetConnectionString(DatabaseSettings? settings = null) {
+
+            settings ??= new DatabaseSettings() {
+                ConnectionString = string.Empty,
+                DefaultProvider = DatabaseProvider.Sqlite
+            };
+
+            switch (settings.DefaultProvider) {
+                default:
+                case DatabaseProvider.Sqlite:
+                    if (settings.UseDefaultConnectionString) {
+                        // The following configures EF to create a Sqlite database file in the
+                        // special "local" folder for your platform.
+                        var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                        return $"Data Source={Path.Join(path, "EventJournal.db")}";
+                    }
+                    break;
+                //case DatabaseProvider.SqlServer:
+                    //break;
+                //case DatabaseProvider.PostgreSQL:
+                    //break;
+            }
+            return settings.ConnectionString;
         }
 
         public Task SaveChangesAsync() {

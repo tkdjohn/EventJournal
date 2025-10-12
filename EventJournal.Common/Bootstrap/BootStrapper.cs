@@ -90,7 +90,7 @@ namespace EventJournal.Common.Bootstrap {
             DI.SetConfiguration(configuration);
 
             foreach (var i in installers) {
-                i.Install(services, configuration);
+                   i.Install(services, configuration);
             }
 
             services.AddSingleton<IConfiguration>(configuration);

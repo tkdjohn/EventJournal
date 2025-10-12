@@ -62,11 +62,7 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
 
 ### NEXT STEPS
 - add bootstrapper to setup 
-    - configuration for db context
-        - consider in memory and sqlite options
-        - consider add option for sql server (localdb or full)
-        - Add support for design time db context factory
-    - get configuration mapping working (appsettings.json)
+    - add config classes to handle settings and add config classes to bootstrap installers
         - might need to add a config class for db settings
         - might need to add a config class for default data settings
         - might need to add a config class for logging settings
@@ -107,7 +103,7 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
     - update event (with details)
  
 ### TODO
-- Replace autoMapper with manual mapping
+- Replace autoMapper with custom mappers
 - add swagger to web api project
 - Add common BootStrap code to be consumed by cli and web api projects
     - remove microsoft.extension.hosting pkg where not needed

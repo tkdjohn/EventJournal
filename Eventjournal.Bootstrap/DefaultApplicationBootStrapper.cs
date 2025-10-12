@@ -5,10 +5,14 @@ namespace EventJournal.BootStrap {
     public class DefaultApplicationBootStrapper : BootStrapper {
         public DefaultApplicationBootStrapper() {
             installers = [
-                new RepositoryInstaller(),
-                new DomainServiceInstaller(),
+                new DatabaseContextInstaller(),
+                new DefaultDataProviderInstaller(),
                 new DistributedLockInstaller(),
+                new DomainServiceInstaller(),
+                new LoggingInstaller(),
+                new MiniProfilerInstaller(),
                 new ModelMapperInstaller(),
+                new RepositoryInstaller(),
             ];
         }
     }

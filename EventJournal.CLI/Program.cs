@@ -2,15 +2,11 @@
 using EventJournal.BootStrap;
 using EventJournal.CLI;
 using EventJournal.Common.Bootstrap;
-using EventJournal.Data;
-using EventJournal.Data.UserTypeRepositories;
 using EventJournal.DomainDto;
 using EventJournal.DomainService;
 using EventJournal.PublicModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
 internal class Program {
     private static async Task Main(string[] args) {
@@ -79,33 +75,17 @@ internal class Program {
             Console.WriteLine("\n=================================================\n");
         }
     }
-    //TODO: move to shared bootsrapper.cs and remove this method and remove microsoft.extension.hosting pkg
-    static IServiceProvider CreateServiceCollection() {
+
+    private static ServiceProvider CreateServiceCollection() {
         IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
         var servicecollection = new ServiceCollection()
-                //TOOD: move to bootstrapper and data source should be in appsettings.json
-                .AddDbContext<IDatabaseContext, DatabaseContext>(options => {
-                    options.UseSqlite($"Data Source={DatabaseContext.GetSqliteDbPath()}");
-                })
-                //TODO: most/all of these should in bootstrapper (and may already be there)
-                .AddSingleton<IDefaultDataProvider, DefaultDataProvider>()
-                .AddLogging(options => {
-                    options.AddDebug();
-                    options.SetMinimumLevel(LogLevel.Error);
-                    options.AddSimpleConsole(options => {
-                        options.SingleLine = true;
-                        options.TimestampFormat = "HH:mm:ss.fff ";
-                        options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-                    });
-                })
-                // setup and register boostrapper and it's installers -- needs to be last
+                // setup and register bootstrapper and it's installers -- needs to be last
                 .AddBootStrapper<DefaultApplicationBootStrapper>(Configuration, o => {
-                    //TOOD: add any application specific installers here if needed
-                    // installers that are common to all applications should go in the DefaultApplicationBootStrapper class
+                    // Add any application specific installers here.
                 });
         return servicecollection.BuildServiceProvider();
     }
@@ -128,7 +108,7 @@ internal class Program {
         }
     }
 
-    //TODO: move to shared utilities class or bootstrapper class and remove this method
+    // TODO: move to shared utilities class or bootstrapper class and remove this method
     private static JsonSerializerOptions GetSerializerOptions() {
         return DtoHelper.DefaultSerializerOptions;
     }

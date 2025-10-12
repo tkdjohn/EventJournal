@@ -36,9 +36,21 @@ namespace EventJournal.Common.Bootstrap {
             return services;
         }
 
+        // TODO: this is untested and may not work as expected
+        public static IServiceCollection AddSingletonClassesByInterface<T>(this IServiceCollection services) where T : class {
+            typeof(T).GetTypeInfo().Assembly.GetTypes()
+                .Where(x => x.GetInterfaces().Contains(typeof(T))
+                    && x.GetTypeInfo().IsClass
+                    && !x.GetTypeInfo().IsAbstract)
+                .ToList()
+                .ForEach(x => services.AddSingleton(x));
+
+            return services;
+        }
         public static IServiceCollection AddBootStrapper<T>(this IServiceCollection services,
             IConfiguration configuration, Action<BootStrapperOptions> options) where T : BootStrapper, new() {
             services.AddSingleton(configuration);
+            services.AddOptions();
             var bootstrapper = new T();
 
             var o = new BootStrapperOptions();
@@ -48,8 +60,6 @@ namespace EventJournal.Common.Bootstrap {
                 bootstrapper.AddInstaller(installer);
             }
 
-            //TODO: figure out if we need to cast to IConfigurationRoot
-            //bootstrapper.InitIoCContainer(configuration: (configuration as IConfigurationRoot), services);
             bootstrapper.InitIoCContainer(configuration, services);
             return services;
         }

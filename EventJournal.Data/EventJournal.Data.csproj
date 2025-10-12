@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventJournal.Common\EventJournal.Common.csproj" />
+    <ProjectReference Include="..\EventJournal.Configuration\EventJournal.Configuration.csproj" />
   </ItemGroup>
 
 </Project>

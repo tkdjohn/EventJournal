@@ -8,7 +8,7 @@ using EventJournal.DomainService.Exceptions;
 namespace EventJournal.DomainService {
     public class EventService(
         IEventRepository eventRepository,
-        //TODO: fix this services shouldn't call services
+        //TODO: fix this. services shouldn't call other services
         IUserTypesService userTypesService,
         IMapper mapper)
     : IEventService {
