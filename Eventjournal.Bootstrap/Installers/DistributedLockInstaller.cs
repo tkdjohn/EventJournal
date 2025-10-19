@@ -1,5 +1,5 @@
 using EventJournal.Common.Bootstrap;
-using EventJournal.Configuration;
+using EventJournal.Common.Configuration;
 using EventJournal.Data;
 using Medallion.Threading;
 using Medallion.Threading.MySql;
@@ -12,7 +12,7 @@ namespace EventJournal.BootStrap.Installers {
             var dbSettings = configuration.GetSection(DatabaseSettings.ConfigurationSectionName).Get<DatabaseSettings>()
                 ?? throw new InvalidOperationException("Configuration settings does not contain a valid DatabaseSettings section.");
 
-
+            // TODO: configure based on Database PRovider from settings
             IDistributedLockProvider provider = new MySqlDistributedSynchronizationProvider(DatabaseContext.GetConnectionString(dbSettings));
             services.AddSingleton(provider);
         }

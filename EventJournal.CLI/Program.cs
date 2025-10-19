@@ -2,7 +2,6 @@
 using EventJournal.BootStrap;
 using EventJournal.CLI;
 using EventJournal.Common.Bootstrap;
-using EventJournal.DomainDto;
 using EventJournal.DomainService;
 using EventJournal.PublicModels;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +14,7 @@ internal class Program {
         var eventService = services.GetService<IEventService>() ?? throw new Exception("Unable to locate a valid Event Service");
         var userTypeService = services.GetService<IUserTypesService>() ?? throw new Exception("Unable to locate a valid User Types Service");
         var defaultDataProvider = services.GetService<IDefaultDataProvider>() ?? throw new Exception("Unable to locate a valid Default Data Provider");
+        var jsonSerializerOptions = services.GetService<JsonSerializerOptions>() ?? throw new Exception("Unable to locate a valid Json Serializer Options");
         bool userIsDone = false;
         while (!userIsDone) {
             //Console.WriteLine("Type '1' to ");
@@ -26,7 +26,7 @@ internal class Program {
             //Console.WriteLine("Type '8' to ");
 
             Console.WriteLine("Type 'v' to view all data");
-            Console.WriteLine("Type 't' to add some test data.");
+            Console.WriteLine("Type 't' to add default test data.");
             Console.WriteLine("Type 'x' to delete all data.");
             Console.WriteLine("Type 'q' to quit.");
 
@@ -63,7 +63,7 @@ internal class Program {
                 //case '9':
                 //    break;
                 case 'v':
-                    await ViewallDataAsync(GetSerializerOptions(), eventService, userTypeService).ConfigureAwait(false);
+                    await ViewallDataAsync(jsonSerializerOptions, eventService, userTypeService).ConfigureAwait(false);
                     break;
                 case 't':
                     await AddTestDataAsync(defaultDataProvider).ConfigureAwait(false);
@@ -81,13 +81,12 @@ internal class Program {
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
-
-        var servicecollection = new ServiceCollection()
+        
+        return new ServiceCollection()
                 // setup and register bootstrapper and it's installers -- needs to be last
                 .AddBootStrapper<DefaultApplicationBootStrapper>(Configuration, o => {
                     // Add any application specific installers here.
-                });
-        return servicecollection.BuildServiceProvider();
+                }).BuildServiceProvider();
     }
 
     static Task AddTestDataAsync(IDefaultDataProvider defaultDataProvider) {
@@ -108,11 +107,6 @@ internal class Program {
         }
     }
 
-    // TODO: move to shared utilities class or bootstrapper class and remove this method
-    private static JsonSerializerOptions GetSerializerOptions() {
-        return DtoHelper.DefaultSerializerOptions;
-    }
-
     static async Task ViewallDataAsync(JsonSerializerOptions options, IEventService eventService, IUserTypesService userTypeService) {
         EventDataResponseModel eventData = new() {
             DetailTypes = await userTypeService.GetAllDetailTypesAsync().ConfigureAwait(false),
@@ -121,6 +115,5 @@ internal class Program {
         };
 
         Console.WriteLine(JsonSerializer.Serialize(eventData, options));
-
     }
 }

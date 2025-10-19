@@ -13,8 +13,9 @@ The concept of Intensity is still a bit muddy, but the idea is that events of a 
       - [Bleeding could be](#bleeding-could-be)
       - [Exercise Intensity could be](#exercise-intensity-could-be)
       - [Entity Framework help](#entity-framework-help)
-    - [NEXT STEPS](#next-steps)
     - [TODO](#todo)
+      - [NEXT STEPS](#next-steps)
+      - [Future TODOs](#future-todos)
     - [Future Considerations](#future-considerations)
 <!--/TOC-->
 ## Features
@@ -60,20 +61,31 @@ Events are the central entity. An `Event` has an `EventType` and one or more `De
 EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
 
 
-### NEXT STEPS
-- add bootstrapper to setup 
-    - add config classes to handle settings and add config classes to bootstrap installers
-        - might need to add a config class for db settings
-        - might need to add a config class for default data settings
-        - might need to add a config class for logging settings
-        - might need to add a config class for web api settings (cors, etc)
-        - might need to add a config class for cli settings (verbosity, etc)
-        - might need to add nuget reference for Microsoft.Extensions.Configuration.Binder
-    - default data seeding 
-        - add option to supply default data from config
-        - move default data provider to bootstrapper?)
-    - move test data from defaultdataprovider to be inserted from UI
-    - (use this as an opportunity to add methods to cli)
+
+ 
+### TODO
+#### NEXT STEPS
+- add config classes to handle settings including adding the new classes to bootstrap installers
+    - extend dbsettings to support other db providers (sqlite, postgresql, mysql, etc)
+        - see if TODO item about supporting other db providers in dbcontext static methods can be done here
+        - see if TODO item in databasecontext about the empty constructor being needed
+        - TEST EF Migrations with new db context configuration code
+        - this means adding nuget references for the other db providers
+        - as well as extending the db settings class to have provider type
+        - and rounding out the static methods in dbcontext itself to handle other providers
+        - TEST EF migrations with other db providers
+    - might need to add a config class for default data settings
+    - might need to add a config class for logging settings
+    - might need to add a config class for web api settings (cors, etc)
+    - might need to add a config class for cli settings (verbosity, etc)
+    - might need to add nuget reference for Microsoft.Extensions.Configuration.Binder
+- scan code for TODO comments and address them or add them to future todo list
+- default data seeding 
+    - ?add option to supply default data from config?
+- add ability to add data in the cli project
+    - add commands to add event types
+    - add commands to add detail types (with allowed intensities)
+    - add commands to add events (with details)
 - still need to test adding event with details at the same time
 - unit tests for 
     - repositories 
@@ -85,7 +97,7 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
     - bootstrapper
     - other helpers/extensions?
     - ?? web api controllers
-
+#### Future TODOs
 - test full get event with details
 - test full get detail type with allowed intensities
 - add endpoints for:
@@ -101,8 +113,6 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
     - update event type
     - update detail type (with allowed intensities)
     - update event (with details)
- 
-### TODO
 - Replace autoMapper with custom mappers
 - add swagger to web api project
 - Add common BootStrap code to be consumed by cli and web api projects

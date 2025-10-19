@@ -9,6 +9,7 @@ namespace EventJournal.BootStrap {
                 new DefaultDataProviderInstaller(),
                 new DistributedLockInstaller(),
                 new DomainServiceInstaller(),
+                new JsonOptionsInstaller(),
                 new LoggingInstaller(),
                 new MiniProfilerInstaller(),
                 new ModelMapperInstaller(),

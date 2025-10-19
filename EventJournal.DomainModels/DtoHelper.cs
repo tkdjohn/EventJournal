@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using EventJournal.Common.Configuration;
+using System.Text.Json;
 
 namespace EventJournal.DomainDto {
     public static partial class DtoHelper {
@@ -17,21 +17,14 @@ namespace EventJournal.DomainDto {
         }
 
         public static string Serialize<T>(this T entity, JsonSerializerOptions? serializerOptions = null) where T : BaseDto {
-            return JsonSerializer.Serialize(entity, entity.GetType(), serializerOptions ?? DefaultSerializerOptions);
+            return JsonSerializer.Serialize(entity, entity.GetType(), serializerOptions ?? JsonSerializerSettings.JsonSerializerOptions);
         }
 
         public static string Serialize<T>(this IEnumerable<T> list, JsonSerializerOptions? serializerOptions = null) where T : BaseDto {
-            return JsonSerializer.Serialize(list, list.GetType(), serializerOptions ?? DefaultSerializerOptions);
+            return JsonSerializer.Serialize(list, list.GetType(), serializerOptions ?? JsonSerializerSettings.JsonSerializerOptions);
         }
 
         //TODO: options should be setup in bootstrap
-        public static readonly JsonSerializerOptions DefaultSerializerOptions = new() {
-            WriteIndented = true,
-            PropertyNameCaseInsensitive = true,
-            //TODO: do we want this?
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { new JsonStringEnumConverter() }
-        };
 
         public static T? Deserialize<T>(this string json) where T : BaseDto {
             //TODO: does this work properly for inherited types?

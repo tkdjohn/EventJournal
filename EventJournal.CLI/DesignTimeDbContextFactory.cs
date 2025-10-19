@@ -1,4 +1,4 @@
-﻿using EventJournal.Configuration;
+﻿using EventJournal.Common.Configuration;
 using EventJournal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -16,16 +16,7 @@ namespace EventJournal.CLI {
                 ?? throw new InvalidOperationException("Configuration settings does not contain a valid DatabaseSettings section.");
 
             var builder = new DbContextOptionsBuilder<DatabaseContext>();
-            switch (dbSettings.DefaultProvider) {
-                default:
-                case DatabaseProvider.Sqlite:
-                    builder.UseSqlite(DatabaseContext.GetConnectionString(dbSettings));
-                    break;
-                    //case DatabaseProvider.SqlServer:
-                    //break;
-                    //case DatabaseProvider.PostgreSQL:
-                    //break;
-            }
+            DatabaseContext.ConfigureFromSettings(builder, dbSettings);
 
             return new DatabaseContext(builder.Options);
         }

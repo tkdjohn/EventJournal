@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventJournal.Common\EventJournal.Common.csproj" />
-    <ProjectReference Include="..\EventJournal.Configuration\EventJournal.Configuration.csproj" />
     <ProjectReference Include="..\EventJournal.Data\EventJournal.Data.csproj" />
     <ProjectReference Include="..\EventJournal.DomainService\EventJournal.DomainService.csproj" />
   </ItemGroup>
