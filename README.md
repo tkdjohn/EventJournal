@@ -1,1 +1,1 @@
-# HippocratesJournal
+# Event Journal
