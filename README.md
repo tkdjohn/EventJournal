@@ -65,7 +65,12 @@ EF https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs
  
 ### TODO
 #### NEXT STEPS
-- add config classes to handle settings including adding the new classes to bootstrap installers
+- update dotnet EF to latest version - seems to be somethign wrong with runnign dotnet tool update -g
+        - might have version conflicts with version 9 vs version 10
+- Consider updatating to .net 10 
+- finnish add config classes to handle settings including adding the new classes to bootstrap installers
+    - not sure if something is wrong with DB config but comments in the code suggest there might be
+    - need to refamiliarize self with how configuration is configured here
     - extend dbsettings to support other db providers (sqlite, postgresql, mysql, etc)
         - see if TODO item about supporting other db providers in dbcontext static methods can be done here
         - see if TODO item in databasecontext about the empty constructor being needed
